@@ -1,0 +1,11 @@
+﻿<Configurations>
+  <Configuration Resolution="1920x1080" Cards="1">
+    <Cards>
+      <Card>
+        <Columns>980,1005,1030,1055,1080</Columns>
+        <Rows>525,548,567,588,608,630</Rows>
+      </Card>
+    </Cards>
+    <PowerPoint>1710,395</PowerPoint>
+  </Configuration>
+</Configurations>
