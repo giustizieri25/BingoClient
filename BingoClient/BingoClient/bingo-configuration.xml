@@ -8,4 +8,53 @@
     </Cards>
     <PowerPoint>1710,395</PowerPoint>
   </Configuration>
+  <Configuration Resolution="1920x1080" Cards="11">
+    <Cards>
+      <Card>
+        <Columns>505,555,610,660,715</Columns>
+        <Rows>165,210,250,295,335,380</Rows>
+      </Card>
+      <Card>
+        <Columns>785,840,890,940,990</Columns>
+        <Rows>165,210,250,295,335,380</Rows>
+      </Card>
+      <Card>
+        <Columns>1065,1120,1170,1220,1270</Columns>
+        <Rows>165,210,250,295,335,380</Rows>
+      </Card>
+      <Card>
+        <Columns>1345,1395,1445,1490,1550</Columns>
+        <Rows>165,210,250,295,335,380</Rows>
+      </Card>
+      <Card>
+        <Columns>505,555,610,660,715</Columns>
+        <Rows>480,520,560,605,645,690</Rows>
+      </Card>
+      <Card>
+        <Columns>785,840,890,940,990</Columns>
+        <Rows>480,520,560,605,645,690</Rows>
+      </Card>
+      <Card>
+        <Columns>1065,1120,1170,1220,1270</Columns>
+        <Rows>480,520,560,605,645,690</Rows>
+      </Card>
+      <Card>
+        <Columns>1345,1395,1445,1490,1550</Columns>
+        <Rows>480,520,560,605,645,690</Rows>
+      </Card>
+      <Card>
+        <Columns>505,555,610,660,715</Columns>
+        <Rows>790,835,875,915,955,1005</Rows>
+      </Card>
+      <Card>
+        <Columns>785,840,890,940,990</Columns>
+        <Rows>790,835,875,915,955,1005</Rows>
+      </Card>
+      <Card>
+        <Columns>1065,1120,1170,1220,1270</Columns>
+        <Rows>790,835,875,915,955,1005</Rows>
+      </Card>
+    </Cards>
+    <PowerPoint>1710,390</PowerPoint>
+  </Configuration>
 </Configurations>

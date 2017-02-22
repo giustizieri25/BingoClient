@@ -13,7 +13,7 @@ namespace BingoClient
 {
     public partial class ConfigPicker : Form
     {
-        public BingoConfiguration SelectedCofiguration { get; set; }
+        internal BingoConfiguration SelectedCofiguration { get; set; }
 
         public ConfigPicker()
         {
@@ -34,6 +34,7 @@ namespace BingoClient
             if (this.listBoxConfigurations.SelectedItem != null)
             {
                 this.DialogResult = DialogResult.OK;
+                this.SelectedCofiguration = ((ConfigPickerItem)this.listBoxConfigurations.SelectedItem).Configuration;
             }
         }
     }
@@ -46,12 +47,12 @@ namespace BingoClient
         public ConfigPickerItem(XmlNode xmlNode)
         {
             this.Name = string.Format("Resolution: {0}\tCards: {1}", xmlNode.Attributes["Resolution"].Value, xmlNode.Attributes["Cards"].Value);
-            this.Configuration = CreateConfiguration(xmlNode);
+            this.Configuration = CreateConfiguration(this.Name, xmlNode);
         }
 
-        private BingoConfiguration CreateConfiguration(XmlNode xmlNode)
+        private BingoConfiguration CreateConfiguration(string name, XmlNode xmlNode)
         {
-            BingoConfiguration bingoConfiguration = new BingoConfiguration();
+            BingoConfiguration bingoConfiguration = new BingoConfiguration(name);
 
             XmlNodeList cardNodeList = xmlNode.SelectNodes(@"Cards/Card");
             foreach (XmlNode cardNode in cardNodeList)
@@ -78,7 +79,8 @@ namespace BingoClient
                     cardConfiguration.OPoints.Add(new Point(columnsValues[4], rowsValues[r]));
                 }
 
-                cardConfiguration.BingoButton = new Point(columnsValues[3], rowsValues[5]);
+                cardConfiguration.BingoButton = new Point(columnsValues[2], rowsValues[5]);
+                bingoConfiguration.CardConfigurations.Add(cardConfiguration);
             }
 
             int[] powerPointValues = xmlNode["PowerPoint"].InnerText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToArray();
