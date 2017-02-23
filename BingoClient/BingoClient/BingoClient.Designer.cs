@@ -186,7 +186,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(586, 317);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(392, 317);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
             // panel1
@@ -207,14 +207,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(610, 93);
+            this.panel1.Size = new System.Drawing.Size(416, 93);
             this.panel1.TabIndex = 14;
             // 
             // BingoClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(610, 428);
+            this.ClientSize = new System.Drawing.Size(416, 428);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
             this.Name = "BingoClient";

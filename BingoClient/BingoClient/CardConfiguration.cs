@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BingoClient
 {
-    class CardConfiguration
+    public class CardConfiguration
     {
         public List<Point> BPoints { get; set; }
         public List<Point> IPoints { get; set; }

@@ -49,7 +49,14 @@
     <Compile Include="BingoDataTable.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="BingoSelectedEventArg.cs" />
     <Compile Include="CardConfiguration.cs" />
+    <Compile Include="CardConfigurator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CardConfigurator.Designer.cs">
+      <DependentUpon>CardConfigurator.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +74,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="BingoClient.resx">
       <DependentUpon>BingoClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CardConfigurator.resx">
+      <DependentUpon>CardConfigurator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigPicker.resx">
       <DependentUpon>ConfigPicker.cs</DependentUpon>

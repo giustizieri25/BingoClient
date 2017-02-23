@@ -42,13 +42,13 @@
             this.listBoxConfigurations.FormattingEnabled = true;
             this.listBoxConfigurations.Location = new System.Drawing.Point(12, 12);
             this.listBoxConfigurations.Name = "listBoxConfigurations";
-            this.listBoxConfigurations.Size = new System.Drawing.Size(179, 238);
+            this.listBoxConfigurations.Size = new System.Drawing.Size(249, 238);
             this.listBoxConfigurations.TabIndex = 0;
             // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(197, 226);
+            this.buttonCancel.Location = new System.Drawing.Point(267, 226);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 1;
@@ -58,7 +58,7 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(197, 197);
+            this.buttonOk.Location = new System.Drawing.Point(267, 197);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 2;
@@ -70,7 +70,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(354, 261);
             this.ControlBox = false;
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.buttonCancel);
