@@ -54,33 +54,38 @@ namespace BingoClient
         {
             BingoConfiguration bingoConfiguration = new BingoConfiguration(name);
 
-            XmlNodeList cardNodeList = xmlNode.SelectNodes(@"Cards/Card");
-            foreach (XmlNode cardNode in cardNodeList)
+            XmlNodeList cardsRows = xmlNode.SelectNodes(@"Cards/RowsPoints");
+            XmlNodeList cardsColumns = xmlNode.SelectNodes(@"Cards/ColumnsPoints");
+
+            int createdCards = 0;
+            int configurationCards = Convert.ToInt32(xmlNode.Attributes["Cards"].Value);
+            for (int r = 0; r < cardsRows.Count; r++)
             {
-                CardConfiguration cardConfiguration = new CardConfiguration();
-
-                XmlElement columnsXmlElement = cardNode["Columns"];
-                XmlElement rowsXmlElement = cardNode["Rows"];
-
-                int[] columnsValues = columnsXmlElement.InnerText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToArray();
-                int[] rowsValues = rowsXmlElement.InnerText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToArray();
-
-                if (columnsValues.Length != 5 || rowsValues.Length != 6)
+                for (int c = 0; c < cardsColumns.Count && createdCards++ < configurationCards; c++)
                 {
-                    throw new Exception("Invalid Configuration: " + this.Name);
-                }
+                    CardConfiguration cardConfiguration = new CardConfiguration();
 
-                for (int r = 0; r < 5; r++)
-                {
-                    cardConfiguration.BPoints.Add(new Point(columnsValues[0], rowsValues[r]));
-                    cardConfiguration.IPoints.Add(new Point(columnsValues[1], rowsValues[r]));
-                    cardConfiguration.NPoints.Add(new Point(columnsValues[2], rowsValues[r]));
-                    cardConfiguration.GPoints.Add(new Point(columnsValues[3], rowsValues[r]));
-                    cardConfiguration.OPoints.Add(new Point(columnsValues[4], rowsValues[r]));
-                }
+                    int[] columnsValues = cardsColumns[c].InnerText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToArray();
+                    int[] rowsValues = cardsRows[r].InnerText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToArray();
 
-                cardConfiguration.BingoButton = new Point(columnsValues[2], rowsValues[5]);
-                bingoConfiguration.CardConfigurations.Add(cardConfiguration);
+                    if (columnsValues.Length != 5 || rowsValues.Length != 6)
+                    {
+                        throw new Exception("Invalid Configuration: " + this.Name);
+                    }
+
+                    for (int n = 0; n < 5; n++)
+                    {
+                        cardConfiguration.BPoints.Add(new Point(columnsValues[0], rowsValues[n]));
+                        cardConfiguration.IPoints.Add(new Point(columnsValues[1], rowsValues[n]));
+                        cardConfiguration.NPoints.Add(new Point(columnsValues[2], rowsValues[n]));
+                        cardConfiguration.GPoints.Add(new Point(columnsValues[3], rowsValues[n]));
+                        cardConfiguration.OPoints.Add(new Point(columnsValues[4], rowsValues[n]));
+                    }
+
+                    cardConfiguration.BingoButton = new Point(columnsValues[2], rowsValues[5]);
+
+                    bingoConfiguration.CardConfigurations.Add(cardConfiguration);
+                }
             }
 
             int[] powerPointValues = xmlNode["PowerPoint"].InnerText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToArray();
@@ -88,6 +93,9 @@ namespace BingoClient
             {
                 throw new Exception("Invalid Configuration: " + this.Name);
             }
+
+            bingoConfiguration.Columns = cardsColumns.Count;
+            bingoConfiguration.Rows = cardsRows.Count;
             bingoConfiguration.PowerButton = new Point(powerPointValues[0], powerPointValues[1]);
 
             return bingoConfiguration;

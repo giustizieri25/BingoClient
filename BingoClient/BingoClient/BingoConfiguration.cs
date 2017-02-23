@@ -12,6 +12,8 @@ namespace BingoClient
         public List<CardConfiguration> CardConfigurations { get; set; }
         public Point PowerButton { get; set; }
         public string Name { get; private set; }
+        public int Columns { get; set; }
+        public int Rows { get; set; }
 
         public BingoConfiguration(string name)
         {

@@ -42,8 +42,10 @@
             this.buttonPower = new System.Windows.Forms.Button();
             this.buttonBingo = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -58,7 +60,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(12, 35);
+            label2.Location = new System.Drawing.Point(12, 33);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(83, 13);
             label2.TabIndex = 2;
@@ -74,7 +76,7 @@
             // 
             // buttonB
             // 
-            this.buttonB.Location = new System.Drawing.Point(93, 30);
+            this.buttonB.Location = new System.Drawing.Point(96, 28);
             this.buttonB.Name = "buttonB";
             this.buttonB.Size = new System.Drawing.Size(23, 23);
             this.buttonB.TabIndex = 3;
@@ -84,7 +86,7 @@
             // 
             // buttonI
             // 
-            this.buttonI.Location = new System.Drawing.Point(122, 30);
+            this.buttonI.Location = new System.Drawing.Point(125, 28);
             this.buttonI.Name = "buttonI";
             this.buttonI.Size = new System.Drawing.Size(23, 23);
             this.buttonI.TabIndex = 4;
@@ -94,7 +96,7 @@
             // 
             // buttonN
             // 
-            this.buttonN.Location = new System.Drawing.Point(151, 30);
+            this.buttonN.Location = new System.Drawing.Point(154, 28);
             this.buttonN.Name = "buttonN";
             this.buttonN.Size = new System.Drawing.Size(23, 23);
             this.buttonN.TabIndex = 5;
@@ -104,7 +106,7 @@
             // 
             // buttonG
             // 
-            this.buttonG.Location = new System.Drawing.Point(180, 30);
+            this.buttonG.Location = new System.Drawing.Point(183, 28);
             this.buttonG.Name = "buttonG";
             this.buttonG.Size = new System.Drawing.Size(23, 23);
             this.buttonG.TabIndex = 6;
@@ -114,7 +116,7 @@
             // 
             // buttonO
             // 
-            this.buttonO.Location = new System.Drawing.Point(209, 30);
+            this.buttonO.Location = new System.Drawing.Point(212, 28);
             this.buttonO.Name = "buttonO";
             this.buttonO.Size = new System.Drawing.Size(23, 23);
             this.buttonO.TabIndex = 7;
@@ -124,7 +126,7 @@
             // 
             // buttonALL
             // 
-            this.buttonALL.Location = new System.Drawing.Point(248, 30);
+            this.buttonALL.Location = new System.Drawing.Point(251, 28);
             this.buttonALL.Name = "buttonALL";
             this.buttonALL.Size = new System.Drawing.Size(75, 23);
             this.buttonALL.TabIndex = 8;
@@ -135,7 +137,7 @@
             // checkBoxCallBingos
             // 
             this.checkBoxCallBingos.AutoSize = true;
-            this.checkBoxCallBingos.Location = new System.Drawing.Point(329, 34);
+            this.checkBoxCallBingos.Location = new System.Drawing.Point(332, 32);
             this.checkBoxCallBingos.Name = "checkBoxCallBingos";
             this.checkBoxCallBingos.Size = new System.Drawing.Size(78, 17);
             this.checkBoxCallBingos.TabIndex = 9;
@@ -144,7 +146,7 @@
             // 
             // textBoxInput
             // 
-            this.textBoxInput.Location = new System.Drawing.Point(93, 59);
+            this.textBoxInput.Location = new System.Drawing.Point(96, 57);
             this.textBoxInput.Name = "textBoxInput";
             this.textBoxInput.Size = new System.Drawing.Size(52, 20);
             this.textBoxInput.TabIndex = 10;
@@ -152,7 +154,7 @@
             // 
             // buttonPower
             // 
-            this.buttonPower.Location = new System.Drawing.Point(248, 59);
+            this.buttonPower.Location = new System.Drawing.Point(251, 57);
             this.buttonPower.Name = "buttonPower";
             this.buttonPower.Size = new System.Drawing.Size(75, 23);
             this.buttonPower.TabIndex = 11;
@@ -162,7 +164,7 @@
             // 
             // buttonBingo
             // 
-            this.buttonBingo.Location = new System.Drawing.Point(329, 59);
+            this.buttonBingo.Location = new System.Drawing.Point(332, 57);
             this.buttonBingo.Name = "buttonBingo";
             this.buttonBingo.Size = new System.Drawing.Size(75, 23);
             this.buttonBingo.TabIndex = 12;
@@ -172,42 +174,55 @@
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 88);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 99);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(433, 173);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(586, 317);
             this.tableLayoutPanel1.TabIndex = 13;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(label1);
+            this.panel1.Controls.Add(this.buttonN);
+            this.panel1.Controls.Add(this.labelConfiguration);
+            this.panel1.Controls.Add(label2);
+            this.panel1.Controls.Add(this.buttonBingo);
+            this.panel1.Controls.Add(this.buttonI);
+            this.panel1.Controls.Add(this.buttonG);
+            this.panel1.Controls.Add(this.checkBoxCallBingos);
+            this.panel1.Controls.Add(this.buttonB);
+            this.panel1.Controls.Add(this.textBoxInput);
+            this.panel1.Controls.Add(this.buttonPower);
+            this.panel1.Controls.Add(this.buttonALL);
+            this.panel1.Controls.Add(this.buttonO);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(610, 93);
+            this.panel1.TabIndex = 14;
             // 
             // BingoClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 261);
+            this.ClientSize = new System.Drawing.Size(610, 428);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.buttonBingo);
-            this.Controls.Add(this.buttonPower);
-            this.Controls.Add(this.textBoxInput);
-            this.Controls.Add(this.checkBoxCallBingos);
-            this.Controls.Add(this.buttonALL);
-            this.Controls.Add(this.buttonB);
-            this.Controls.Add(this.buttonO);
-            this.Controls.Add(label2);
-            this.Controls.Add(this.buttonI);
-            this.Controls.Add(this.labelConfiguration);
-            this.Controls.Add(this.buttonG);
-            this.Controls.Add(label1);
-            this.Controls.Add(this.buttonN);
+            this.Controls.Add(this.panel1);
             this.Name = "BingoClient";
             this.Text = "Bingo Client";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -225,6 +240,7 @@
         private System.Windows.Forms.Button buttonPower;
         private System.Windows.Forms.Button buttonBingo;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

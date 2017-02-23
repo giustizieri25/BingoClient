@@ -1,59 +1,20 @@
 ﻿<Configurations>
-  <Configuration Resolution="1920x1080" Cards="1">
+  <Configuration Resolution="1920x1080" Cards="1" >
     <Cards>
-      <Card>
-        <Columns>980,1005,1030,1055,1080</Columns>
-        <Rows>525,548,567,588,608,630</Rows>
-      </Card>
+        <RowsPoints>525,548,567,588,608,630</RowsPoints>
+        <ColumnsPoints>980,1005,1030,1055,1080</ColumnsPoints>
     </Cards>
     <PowerPoint>1710,395</PowerPoint>
   </Configuration>
   <Configuration Resolution="1920x1080" Cards="11">
     <Cards>
-      <Card>
-        <Columns>505,555,610,660,715</Columns>
-        <Rows>165,210,250,295,335,380</Rows>
-      </Card>
-      <Card>
-        <Columns>785,840,890,940,990</Columns>
-        <Rows>165,210,250,295,335,380</Rows>
-      </Card>
-      <Card>
-        <Columns>1065,1120,1170,1220,1270</Columns>
-        <Rows>165,210,250,295,335,380</Rows>
-      </Card>
-      <Card>
-        <Columns>1345,1395,1445,1490,1550</Columns>
-        <Rows>165,210,250,295,335,380</Rows>
-      </Card>
-      <Card>
-        <Columns>505,555,610,660,715</Columns>
-        <Rows>480,520,560,605,645,690</Rows>
-      </Card>
-      <Card>
-        <Columns>785,840,890,940,990</Columns>
-        <Rows>480,520,560,605,645,690</Rows>
-      </Card>
-      <Card>
-        <Columns>1065,1120,1170,1220,1270</Columns>
-        <Rows>480,520,560,605,645,690</Rows>
-      </Card>
-      <Card>
-        <Columns>1345,1395,1445,1490,1550</Columns>
-        <Rows>480,520,560,605,645,690</Rows>
-      </Card>
-      <Card>
-        <Columns>505,555,610,660,715</Columns>
-        <Rows>790,835,875,915,955,1005</Rows>
-      </Card>
-      <Card>
-        <Columns>785,840,890,940,990</Columns>
-        <Rows>790,835,875,915,955,1005</Rows>
-      </Card>
-      <Card>
-        <Columns>1065,1120,1170,1220,1270</Columns>
-        <Rows>790,835,875,915,955,1005</Rows>
-      </Card>
+        <RowsPoints>165,210,250,295,335,380</RowsPoints>
+        <RowsPoints>480,520,560,605,645,690</RowsPoints>
+        <RowsPoints>790,835,875,915,955,1005</RowsPoints>
+        <ColumnsPoints>505,555,610,660,715</ColumnsPoints>
+        <ColumnsPoints>785,840,890,940,990</ColumnsPoints>
+        <ColumnsPoints>1065,1120,1170,1220,1270</ColumnsPoints>
+        <ColumnsPoints>1345,1395,1445,1490,1550</ColumnsPoints>
     </Cards>
     <PowerPoint>1710,390</PowerPoint>
   </Configuration>
