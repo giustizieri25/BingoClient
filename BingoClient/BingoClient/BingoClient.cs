@@ -114,7 +114,7 @@ namespace BingoClient
                 if (waitMs > 0)
                 {
                     Thread.Sleep(waitMs);
-                } 
+                }
             }
         }
 
@@ -210,19 +210,15 @@ namespace BingoClient
 
         private void buttonALL_Click(object sender, EventArgs e)
         {
-            IEnumerable<Point> allpoints = this.CurrentConfiguration.CardConfigurations.SelectMany(cc => cc.BPoints
+            IEnumerable<Point> allpoints = this.CurrentConfiguration.CardConfigurations.SelectMany(cc =>
+                (cc.BPoints)
                 .Concat(cc.IPoints)
                 .Concat(cc.NPoints)
                 .Concat(cc.GPoints)
-                .Concat(cc.OPoints)).ToList();
+                .Concat(cc.OPoints)
+                .Concat(checkBoxCallBingos.Checked ? new Point[] { cc.BingoButton } : new Point[] { })).ToList();
 
-            ClickPointsAndRestore(allpoints, 10, true);
-
-            if (checkBoxCallBingos.Checked)
-            {
-                allpoints = this.CurrentConfiguration.CardConfigurations.Select(cc => cc.BingoButton);
-                ClickPointsAndRestore(allpoints, 150, false);
-            }
+            ClickPointsAndRestore(allpoints, 10, false);
         }
 
         private void textBoxInput_KeyUp(object sender, KeyEventArgs e)
@@ -249,6 +245,14 @@ namespace BingoClient
                         break;
                     case "o":
                         buttonO_Click(null, new BingoSelectedEventArgs());
+                        textBoxInput.Clear();
+                        break;
+                    case "p":
+                        buttonPower_Click(null, null);
+                        textBoxInput.Clear();
+                        break;
+                    case "a":
+                        buttonALL_Click(null, null);
                         textBoxInput.Clear();
                         break;
                     default:
@@ -309,7 +313,7 @@ namespace BingoClient
         private void buttonBingo_Click(object sender, EventArgs e)
         {
             IEnumerable<Point> bingos = this.CurrentConfiguration.CardConfigurations.Select(cc => cc.BingoButton);
-            ClickPointsAndRestore(bingos, 150, false);
+            ClickPointsAndRestore(bingos, 350, false);
         }
     }
 }
