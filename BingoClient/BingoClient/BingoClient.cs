@@ -29,18 +29,18 @@ namespace BingoClient
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void form1_Load(object sender, EventArgs e)
         {
             if (CurrentConfiguration == null)
             {
-                PickConfiguration();
+                pickConfiguration();
             }
 
-            CreateCardConfigurationButtons();
-            PreLoadNumberMasks();
+            createCardConfigurationButtons();
+            preLoadNumberMasks();
         }
 
-        private void PreLoadNumberMasks()
+        private void preLoadNumberMasks()
         {
             string fileName;
             for (int i = 0; i <= 75; i++)
@@ -53,7 +53,7 @@ namespace BingoClient
             }
         }
 
-        private void CreateCardConfigurationButtons()
+        private void createCardConfigurationButtons()
         {
             this.tableLayoutPanel1.Controls.Clear();
             this.tableLayoutPanel1.ColumnStyles.Clear();
@@ -76,7 +76,7 @@ namespace BingoClient
                 {
                     Button b = new Button();
                     b.Text = "Add";
-                    b.Click += CardConfigurator_Click;
+                    b.Click += cardConfigurator_Click;
                     b.Dock = DockStyle.Fill;
                     b.TextAlign = ContentAlignment.MiddleCenter;
                     this.tableLayoutPanel1.Controls.Add(b, c, r);
@@ -84,18 +84,71 @@ namespace BingoClient
             }
         }
 
-        private void CardConfigurator_Click(object sender, EventArgs e)
+        private void cardConfigurator_Click(object sender, EventArgs e)
         {
             TableLayoutPanelCellPosition cell = this.tableLayoutPanel1.GetCellPosition((Control)sender);
-            int index = cell.Row * this.CurrentConfiguration.Columns + cell.Column;
-            CardConfigurator cc = new CardConfigurator(this.CurrentConfiguration.CardConfigurations[index]);
-            if (cc.ShowDialog(this) == DialogResult.OK)
+            if (this.createCardConfiguration(cell.Row, cell.Column, false))
             {
-                this.CurrentConfiguration.CardConfigurations[index].Numbers = cc.BingoDataTable;
+                Control senderControl = sender as Control;
+                senderControl.Visible = false;
+                this.updateCardConfigurationThumbnail(senderControl.Parent, this.CurrentConfiguration.CardConfigurations[cell.Row * this.CurrentConfiguration.Columns + cell.Column]);
             }
         }
 
-        private void PickConfiguration()
+        private bool createCardConfiguration(int row, int column, bool silent)
+        {
+            int index = row * this.CurrentConfiguration.Columns + column;
+            CardConfigurator cc = new CardConfigurator(this.CurrentConfiguration.CardConfigurations[index]);
+
+            if (silent)
+            {
+                cc.StartScreenRecognition(this.CurrentConfiguration.CardConfigurations[index]);
+                if (cc.ValidateDataSource())
+                {
+                    this.CurrentConfiguration.CardConfigurations[index].Numbers = cc.BingoDataTable;
+                    return true;
+                }
+            }
+            else
+            {
+                if (cc.ShowDialog(this) == DialogResult.OK)
+                {
+                    this.CurrentConfiguration.CardConfigurations[index].Numbers = cc.BingoDataTable;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void updateCardConfigurationThumbnail(Control parent, CardConfiguration cc)
+        {
+            this.SuspendLayout();
+            TableLayoutPanel tlp = new TableLayoutPanel();
+            tlp.ColumnCount = 5;
+            tlp.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            for (int i = 0; i < tlp.ColumnCount; i++)
+            {
+                tlp.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100 / tlp.ColumnCount));
+            }
+            tlp.RowCount = 5;
+            for (int i = 0; i < tlp.RowCount; i++)
+            {
+                tlp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100 / tlp.RowCount));
+            }
+            parent.Controls.Add(tlp);
+
+            for (int i = 0; i < 5; i++)
+            {
+                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["B"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
+                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["I"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
+                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["N"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
+                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["G"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
+                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["O"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
+            }
+            this.ResumeLayout(true);
+        }
+
+        private void pickConfiguration()
         {
             ConfigPicker configPicker = new ConfigPicker();
 
@@ -106,18 +159,18 @@ namespace BingoClient
             }
         }
 
-        private void ClickPointsAndRestore(IEnumerable<Point> points, int waitMs, bool doubleClick)
+        private void clickPointsAndRestore(IEnumerable<Point> points, int waitMs, bool doubleClick)
         {
             Point cursorPoint = Cursor.Position;
             foreach (Point p in points)
             {
-                ClickAtPoint(p, waitMs, doubleClick);
+                clickAtPoint(p, waitMs, doubleClick);
             }
             this.Activate();
             Cursor.Position = cursorPoint;
         }
 
-        private void ClickAtPoint(Point p, int waitMs, bool doubleClick)
+        private void clickAtPoint(Point p, int waitMs, bool doubleClick)
         {
             Cursor.Position = new Point(p.X, p.Y);
             mouse_event(MOUSEEVENTF_LEFTDOWN, p.X, p.Y, 0, 0);
@@ -174,7 +227,7 @@ namespace BingoClient
             buttonColumn_Clicked(args);
         }
 
-        private IEnumerable<Point> SearchNumberOrColumns(string column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
+        private IEnumerable<Point> searchNumberOrColumns(string column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
         {
             List<Point> points = new List<Point>();
             foreach (CardConfiguration cardConfiguration in this.CurrentConfiguration.CardConfigurations)
@@ -218,15 +271,18 @@ namespace BingoClient
         private void buttonColumn_Clicked(BingoSelectedEventArgs e)
         {
             IEnumerable<Point> points;
+            int interval;
             if (e.Number.HasValue)
             {
-                points = SearchNumberOrColumns(e.Column, e.Number.Value, e.AllPoints);
+                points = searchNumberOrColumns(e.Column, e.Number.Value, e.AllPoints);
+                interval = 100;
             }
             else
             {
                 points = this.CurrentConfiguration.CardConfigurations.SelectMany(e.AllPoints).ToList();
+                interval = 10;
             }
-            ClickPointsAndRestore(points, 10, true);
+            clickPointsAndRestore(points, interval, true);
         }
 
         private void buttonALL_Click(object sender, EventArgs e)
@@ -239,7 +295,7 @@ namespace BingoClient
                 .Concat(cc.OPoints)
                 .Concat(checkBoxCallBingos.Checked ? new Point[] { cc.BingoButton } : new Point[] { })).ToList();
 
-            ClickPointsAndRestore(allpoints, 10, false);
+            clickPointsAndRestore(allpoints, 10, false);
         }
 
         private void textBoxInput_KeyUp(object sender, KeyEventArgs e)
@@ -328,13 +384,49 @@ namespace BingoClient
 
         private void buttonPower_Click(object sender, EventArgs e)
         {
-            ClickPointsAndRestore(new Point[] { this.CurrentConfiguration.PowerButton }, 10, false);
+            clickPointsAndRestore(new Point[] { this.CurrentConfiguration.PowerButton }, 10, false);
         }
 
         private void buttonBingo_Click(object sender, EventArgs e)
         {
             IEnumerable<Point> bingos = this.CurrentConfiguration.CardConfigurations.Select(cc => cc.BingoButton);
-            ClickPointsAndRestore(bingos, 350, false);
+            clickPointsAndRestore(bingos, 350, false);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.createCardConfigurationButtons();
+            foreach (CardConfiguration cc in this.CurrentConfiguration.CardConfigurations)
+            {
+                cc.Numbers = null;
+            }
+        }
+
+        private void readNumbersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int r = 0; r < this.CurrentConfiguration.Rows; r++)
+            {
+                for (int c = 0; c < this.CurrentConfiguration.Columns; c++)
+                {
+                    int index = r * this.CurrentConfiguration.Columns + c;
+                    if (this.CurrentConfiguration.CardConfigurations[index].Numbers != null)
+                    {
+                        continue;
+                    }
+
+                    if (this.createCardConfiguration(r, c, true))
+                    {
+                        Control control = this.tableLayoutPanel1.GetControlFromPosition(c, r);
+                        control.Visible = false;
+                        this.updateCardConfigurationThumbnail(control.Parent, this.CurrentConfiguration.CardConfigurations[index]);
+                    }
+                }
+            }
         }
     }
 }

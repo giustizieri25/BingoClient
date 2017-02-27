@@ -14,6 +14,7 @@ namespace BingoClient
     public partial class CardConfigurator : Form
     {
         public BingoDataTable BingoDataTable { get; private set; }
+        private readonly CardConfiguration cardConfiguration;
 
         internal CardConfigurator(CardConfiguration cardConfiguration)
         {
@@ -22,16 +23,16 @@ namespace BingoClient
             if (cardConfiguration.Numbers == null)
             {
                 this.BingoDataTable = new BingoDataTable();
-                this.StartScreenRecognition(cardConfiguration);
             }
             else
             {
                 this.BingoDataTable = cardConfiguration.Numbers;
             }
+            this.cardConfiguration = cardConfiguration;
             this.dataGridView1.DataSource = this.BingoDataTable;
         }
 
-        private void StartScreenRecognition(CardConfiguration cardConfiguration)
+        internal void StartScreenRecognition(CardConfiguration cardConfiguration)
         {
             Color BColor = Color.FromArgb(69, 121, 40);
             Color IColor = Color.FromArgb(175, 138, 0);
@@ -161,37 +162,45 @@ namespace BingoClient
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            if (!this.ValidateDataSource())
+            {
+                return;
+            }
+            this.DialogResult = DialogResult.OK;
+        }
+
+        internal bool ValidateDataSource()
+        {
             BingoDataTable bdt = (BingoDataTable)this.dataGridView1.DataSource;
 
             foreach (DataRow dr in bdt.Rows)
             {
                 if (!ValidateColumn(dr, "B", 1, 15, false))
                 {
-                    return;
+                    return false;
                 }
 
                 if (!ValidateColumn(dr, "I", 16, 30, false))
                 {
-                    return;
+                    return false;
                 }
 
                 if (!ValidateColumn(dr, "N", 31, 45, bdt.Rows.IndexOf(dr) == 2))
                 {
-                    return;
+                    return false;
                 }
 
                 if (!ValidateColumn(dr, "G", 46, 60, false))
                 {
-                    return;
+                    return false;
                 }
 
                 if (!ValidateColumn(dr, "O", 60, 75, false))
                 {
-                    return;
+                    return false;
                 }
             }
-
-            this.DialogResult = DialogResult.OK;
+            return true;
         }
 
         private bool ValidateColumn(DataRow dr, string columnName, int minValue, int maxValue, bool allowNull)
@@ -204,6 +213,14 @@ namespace BingoClient
             this.DialogResult = DialogResult.Cancel;
             this.BingoDataTable = null;
             Close();
+        }
+
+        private void CardConfigurator_Load(object sender, EventArgs e)
+        {
+            if (this.cardConfiguration.Numbers == null)
+            {
+                this.StartScreenRecognition(this.cardConfiguration);
+            }
         }
     }
 }
