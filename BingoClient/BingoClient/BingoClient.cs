@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,6 +22,7 @@ namespace BingoClient
 
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
+        public static Bitmap[] NumberBitmaps = new Bitmap[76];
 
         public BingoClient()
         {
@@ -34,6 +36,25 @@ namespace BingoClient
                 PickConfiguration();
             }
 
+            CreateCardConfigurationButtons();
+            PreLoadNumberMasks();
+        }
+
+        private void PreLoadNumberMasks()
+        {
+            string fileName;
+            for (int i = 0; i <= 75; i++)
+            {
+                fileName = string.Format(@".\masks\{0}.png", i.ToString().PadLeft(2, '0'));
+                if (File.Exists(fileName))
+                {
+                    BingoClient.NumberBitmaps[i] = (Bitmap)Bitmap.FromFile(fileName);
+                }
+            }
+        }
+
+        private void CreateCardConfigurationButtons()
+        {
             this.tableLayoutPanel1.Controls.Clear();
             this.tableLayoutPanel1.ColumnStyles.Clear();
             this.tableLayoutPanel1.RowStyles.Clear();
