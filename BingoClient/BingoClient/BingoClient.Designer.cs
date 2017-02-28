@@ -30,6 +30,9 @@
         {
             System.Windows.Forms.Label label1;
             System.Windows.Forms.Label label2;
+            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
             this.labelConfiguration = new System.Windows.Forms.Label();
             this.buttonB = new System.Windows.Forms.Button();
             this.buttonI = new System.Windows.Forms.Button();
@@ -48,10 +51,18 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.readNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelLastCall = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelLastCallMatches = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelTotalMatches = new System.Windows.Forms.ToolStripStatusLabel();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
+            toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -71,6 +82,12 @@
             label2.Size = new System.Drawing.Size(83, 13);
             label2.TabIndex = 2;
             label2.Text = "Check columns:";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new System.Drawing.Size(52, 17);
+            toolStripStatusLabel1.Text = "Last call:";
             // 
             // labelConfiguration
             // 
@@ -156,7 +173,7 @@
             this.textBoxInput.Name = "textBoxInput";
             this.textBoxInput.Size = new System.Drawing.Size(52, 20);
             this.textBoxInput.TabIndex = 10;
-            this.textBoxInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBoxInput_KeyUp);
+            this.textBoxInput.TextChanged += new System.EventHandler(this.textBoxInput_TextChanged);
             // 
             // buttonPower
             // 
@@ -190,7 +207,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 316F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 292F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(394, 293);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
@@ -256,11 +273,57 @@
             this.readNumbersToolStripMenuItem.Text = "Read Numbers";
             this.readNumbersToolStripMenuItem.Click += new System.EventHandler(this.readNumbersToolStripMenuItem_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            toolStripStatusLabel1,
+            this.toolStripStatusLabelLastCall,
+            toolStripStatusLabel2,
+            this.toolStripStatusLabelLastCallMatches,
+            toolStripStatusLabel3,
+            this.toolStripStatusLabelTotalMatches});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 406);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(418, 22);
+            this.statusStrip1.TabIndex = 16;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelLastCall
+            // 
+            this.toolStripStatusLabelLastCall.Name = "toolStripStatusLabelLastCall";
+            this.toolStripStatusLabelLastCall.Size = new System.Drawing.Size(13, 17);
+            this.toolStripStatusLabelLastCall.Text = "0";
+            // 
+            // toolStripStatusLabel2
+            // 
+            toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            toolStripStatusLabel2.Size = new System.Drawing.Size(58, 17);
+            toolStripStatusLabel2.Text = "Matches: ";
+            // 
+            // toolStripStatusLabelLastCallMatches
+            // 
+            this.toolStripStatusLabelLastCallMatches.Name = "toolStripStatusLabelLastCallMatches";
+            this.toolStripStatusLabelLastCallMatches.Size = new System.Drawing.Size(13, 17);
+            this.toolStripStatusLabelLastCallMatches.Text = "0";
+            // 
+            // toolStripStatusLabel3
+            // 
+            toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            toolStripStatusLabel3.Size = new System.Drawing.Size(84, 17);
+            toolStripStatusLabel3.Text = "Total matches:";
+            // 
+            // toolStripStatusLabelTotalMatches
+            // 
+            this.toolStripStatusLabelTotalMatches.Name = "toolStripStatusLabelTotalMatches";
+            this.toolStripStatusLabelTotalMatches.Size = new System.Drawing.Size(13, 17);
+            this.toolStripStatusLabelTotalMatches.Text = "0";
+            // 
             // BingoClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(418, 428);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
@@ -272,6 +335,8 @@
             this.panel1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -297,6 +362,10 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem readNumbersToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLastCall;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLastCallMatches;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelTotalMatches;
     }
 }
 

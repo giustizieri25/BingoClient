@@ -23,6 +23,7 @@ namespace BingoClient
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
         public static Bitmap[] NumberBitmaps = new Bitmap[76];
+        private int lastCallMatches, totalMatches;
 
         public BingoClient()
         {
@@ -89,9 +90,9 @@ namespace BingoClient
             TableLayoutPanelCellPosition cell = this.tableLayoutPanel1.GetCellPosition((Control)sender);
             if (this.createCardConfiguration(cell.Row, cell.Column, false))
             {
-                Control senderControl = sender as Control;
-                senderControl.Visible = false;
-                this.updateCardConfigurationThumbnail(senderControl.Parent, this.CurrentConfiguration.CardConfigurations[cell.Row * this.CurrentConfiguration.Columns + cell.Column]);
+                Button senderButton = sender as Button;
+                senderButton.Text = "Edit";
+                //this.updateCardConfigurationThumbnail(senderControl.Parent, this.CurrentConfiguration.CardConfigurations[cell.Row * this.CurrentConfiguration.Columns + cell.Column]);
             }
         }
 
@@ -230,6 +231,7 @@ namespace BingoClient
         private IEnumerable<Point> searchNumberOrColumns(string column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
         {
             List<Point> points = new List<Point>();
+            lastCallMatches = 0;
             foreach (CardConfiguration cardConfiguration in this.CurrentConfiguration.CardConfigurations)
             {
                 if (cardConfiguration.Numbers != null)
@@ -238,6 +240,7 @@ namespace BingoClient
                     int index = cardConfiguration.Numbers.Rows.IndexOf(dr);
                     if (index > -1)
                     {
+                        lastCallMatches++;
                         switch (column)
                         {
                             case "b":
@@ -275,6 +278,8 @@ namespace BingoClient
             if (e.Number.HasValue)
             {
                 points = searchNumberOrColumns(e.Column, e.Number.Value, e.AllPoints);
+                toolStripStatusLabelLastCallMatches.Text = lastCallMatches.ToString();
+                toolStripStatusLabelTotalMatches.Text = (totalMatches += lastCallMatches).ToString();
                 interval = 100;
             }
             else
@@ -296,90 +301,6 @@ namespace BingoClient
                 .Concat(checkBoxCallBingos.Checked ? new Point[] { cc.BingoButton } : new Point[] { })).ToList();
 
             clickPointsAndRestore(allpoints, 10, false);
-        }
-
-        private void textBoxInput_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (textBoxInput.Text.Length == 1)
-            {
-                switch (textBoxInput.Text)
-                {
-                    case "b":
-                        buttonB_Click(null, new BingoSelectedEventArgs());
-                        textBoxInput.Clear();
-                        break;
-                    case "i":
-                        buttonI_Click(null, new BingoSelectedEventArgs());
-                        textBoxInput.Clear();
-                        break;
-                    case "n":
-                        buttonN_Click(null, new BingoSelectedEventArgs());
-                        textBoxInput.Clear();
-                        break;
-                    case "g":
-                        buttonG_Click(null, new BingoSelectedEventArgs());
-                        textBoxInput.Clear();
-                        break;
-                    case "o":
-                        buttonO_Click(null, new BingoSelectedEventArgs());
-                        textBoxInput.Clear();
-                        break;
-                    case "p":
-                        buttonPower_Click(null, null);
-                        textBoxInput.Clear();
-                        break;
-                    case "a":
-                        buttonALL_Click(null, null);
-                        textBoxInput.Clear();
-                        break;
-                    default:
-                        if (!Char.IsDigit(textBoxInput.Text[0]))
-                        {
-                            textBoxInput.Clear();
-                        }
-                        break;
-                }
-            }
-            else if (textBoxInput.Text.Length == 2)
-            {
-                int i;
-                if (Int32.TryParse(textBoxInput.Text, out i))
-                {
-                    if (1 <= i && i <= 15)
-                    {
-                        buttonB_Click(null, new BingoSelectedEventArgs("b", i));
-                        textBoxInput.Clear();
-                    }
-                    else if (16 <= i && i <= 30)
-                    {
-                        buttonI_Click(null, new BingoSelectedEventArgs("i", i));
-                        textBoxInput.Clear();
-                    }
-                    else if (31 <= i && i <= 45)
-                    {
-                        buttonN_Click(null, new BingoSelectedEventArgs("n", i));
-                        textBoxInput.Clear();
-                    }
-                    else if (46 <= i && i <= 60)
-                    {
-                        buttonG_Click(null, new BingoSelectedEventArgs("g", i));
-                        textBoxInput.Clear();
-                    }
-                    else if (61 <= i && i <= 75)
-                    {
-                        buttonO_Click(null, new BingoSelectedEventArgs("o", i));
-                        textBoxInput.Clear();
-                    }
-                    else
-                    {
-                        textBoxInput.Clear();
-                    }
-                }
-                else
-                {
-                    textBoxInput.Clear();
-                }
-            }
         }
 
         private void buttonPower_Click(object sender, EventArgs e)
@@ -421,10 +342,104 @@ namespace BingoClient
 
                     if (this.createCardConfiguration(r, c, true))
                     {
-                        Control control = this.tableLayoutPanel1.GetControlFromPosition(c, r);
-                        control.Visible = false;
-                        this.updateCardConfigurationThumbnail(control.Parent, this.CurrentConfiguration.CardConfigurations[index]);
+                        Button button = this.tableLayoutPanel1.GetControlFromPosition(c, r) as Button;
+                        button.Text = "Edit";
+                        //this.updateCardConfigurationThumbnail(control.Parent, this.CurrentConfiguration.CardConfigurations[index]);
                     }
+                }
+            }
+        }
+
+        private void textBoxInput_TextChanged(object sender, EventArgs e)
+        {
+            if (textBoxInput.Text.Length == 1)
+            {
+                switch (textBoxInput.Text)
+                {
+                    case "b":
+                        buttonB_Click(null, new BingoSelectedEventArgs());
+                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        textBoxInput.Clear();
+                        break;
+                    case "i":
+                        buttonI_Click(null, new BingoSelectedEventArgs());
+                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        textBoxInput.Clear();
+                        break;
+                    case "n":
+                        buttonN_Click(null, new BingoSelectedEventArgs());
+                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        textBoxInput.Clear();
+                        break;
+                    case "g":
+                        buttonG_Click(null, new BingoSelectedEventArgs());
+                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        textBoxInput.Clear();
+                        break;
+                    case "o":
+                        buttonO_Click(null, new BingoSelectedEventArgs());
+                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        textBoxInput.Clear();
+                        break;
+                    case "p":
+                        buttonPower_Click(null, null);
+                        textBoxInput.Clear();
+                        break;
+                    case "a":
+                        buttonALL_Click(null, null);
+                        textBoxInput.Clear();
+                        break;
+                    default:
+                        if (!Char.IsDigit(textBoxInput.Text[0]))
+                        {
+                            textBoxInput.Clear();
+                        }
+                        break;
+                }
+            }
+            else if (textBoxInput.Text.Length == 2)
+            {
+                int i;
+                if (Int32.TryParse(textBoxInput.Text, out i))
+                {
+                    if (1 <= i && i <= 15)
+                    {
+                        buttonB_Click(null, new BingoSelectedEventArgs("b", i));
+                        toolStripStatusLabelLastCall.Text = i.ToString();
+                        textBoxInput.Clear();
+                    }
+                    else if (16 <= i && i <= 30)
+                    {
+                        buttonI_Click(null, new BingoSelectedEventArgs("i", i));
+                        toolStripStatusLabelLastCall.Text = i.ToString();
+                        textBoxInput.Clear();
+                    }
+                    else if (31 <= i && i <= 45)
+                    {
+                        buttonN_Click(null, new BingoSelectedEventArgs("n", i));
+                        toolStripStatusLabelLastCall.Text = i.ToString();
+                        textBoxInput.Clear();
+                    }
+                    else if (46 <= i && i <= 60)
+                    {
+                        buttonG_Click(null, new BingoSelectedEventArgs("g", i));
+                        toolStripStatusLabelLastCall.Text = i.ToString();
+                        textBoxInput.Clear();
+                    }
+                    else if (61 <= i && i <= 75)
+                    {
+                        buttonO_Click(null, new BingoSelectedEventArgs("o", i));
+                        toolStripStatusLabelLastCall.Text = i.ToString();
+                        textBoxInput.Clear();
+                    }
+                    else
+                    {
+                        textBoxInput.Clear();
+                    }
+                }
+                else
+                {
+                    textBoxInput.Clear();
                 }
             }
         }
