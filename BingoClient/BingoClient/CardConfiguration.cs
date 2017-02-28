@@ -16,6 +16,7 @@ namespace BingoClient
         public List<Point> OPoints { get; set; }
         public Point BingoButton { get; set; }
         public BingoDataTable Numbers { get; set; }
+        public List<Point> SelectedNumbers { get; set; }
 
         public CardConfiguration()
         {
@@ -24,6 +25,7 @@ namespace BingoClient
             this.NPoints = new List<Point>();
             this.GPoints = new List<Point>();
             this.OPoints = new List<Point>();
+            this.SelectedNumbers = new List<Point>() { new Point(2,2) };
         }
     }
 }

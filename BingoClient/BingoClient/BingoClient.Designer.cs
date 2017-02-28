@@ -33,6 +33,7 @@
             System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
             System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
             System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
             this.labelConfiguration = new System.Windows.Forms.Label();
             this.buttonB = new System.Windows.Forms.Button();
             this.buttonI = new System.Windows.Forms.Button();
@@ -55,11 +56,13 @@
             this.toolStripStatusLabelLastCall = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelLastCallMatches = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelTotalMatches = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelBingos = new System.Windows.Forms.ToolStripStatusLabel();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -88,6 +91,18 @@
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             toolStripStatusLabel1.Size = new System.Drawing.Size(52, 17);
             toolStripStatusLabel1.Text = "Last call:";
+            // 
+            // toolStripStatusLabel2
+            // 
+            toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            toolStripStatusLabel2.Size = new System.Drawing.Size(58, 17);
+            toolStripStatusLabel2.Text = "Matches: ";
+            // 
+            // toolStripStatusLabel3
+            // 
+            toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            toolStripStatusLabel3.Size = new System.Drawing.Size(84, 17);
+            toolStripStatusLabel3.Text = "Total matches:";
             // 
             // labelConfiguration
             // 
@@ -281,7 +296,9 @@
             toolStripStatusLabel2,
             this.toolStripStatusLabelLastCallMatches,
             toolStripStatusLabel3,
-            this.toolStripStatusLabelTotalMatches});
+            this.toolStripStatusLabelTotalMatches,
+            toolStripStatusLabel4,
+            this.toolStripStatusLabelBingos});
             this.statusStrip1.Location = new System.Drawing.Point(0, 406);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(418, 22);
@@ -294,29 +311,29 @@
             this.toolStripStatusLabelLastCall.Size = new System.Drawing.Size(13, 17);
             this.toolStripStatusLabelLastCall.Text = "0";
             // 
-            // toolStripStatusLabel2
-            // 
-            toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            toolStripStatusLabel2.Size = new System.Drawing.Size(58, 17);
-            toolStripStatusLabel2.Text = "Matches: ";
-            // 
             // toolStripStatusLabelLastCallMatches
             // 
             this.toolStripStatusLabelLastCallMatches.Name = "toolStripStatusLabelLastCallMatches";
             this.toolStripStatusLabelLastCallMatches.Size = new System.Drawing.Size(13, 17);
             this.toolStripStatusLabelLastCallMatches.Text = "0";
             // 
-            // toolStripStatusLabel3
-            // 
-            toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            toolStripStatusLabel3.Size = new System.Drawing.Size(84, 17);
-            toolStripStatusLabel3.Text = "Total matches:";
-            // 
             // toolStripStatusLabelTotalMatches
             // 
             this.toolStripStatusLabelTotalMatches.Name = "toolStripStatusLabelTotalMatches";
             this.toolStripStatusLabelTotalMatches.Size = new System.Drawing.Size(13, 17);
             this.toolStripStatusLabelTotalMatches.Text = "0";
+            // 
+            // toolStripStatusLabel4
+            // 
+            toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            toolStripStatusLabel4.Size = new System.Drawing.Size(46, 17);
+            toolStripStatusLabel4.Text = "Bingos:";
+            // 
+            // toolStripStatusLabelBingos
+            // 
+            this.toolStripStatusLabelBingos.Name = "toolStripStatusLabelBingos";
+            this.toolStripStatusLabelBingos.Size = new System.Drawing.Size(13, 17);
+            this.toolStripStatusLabelBingos.Text = "0";
             // 
             // BingoClient
             // 
@@ -330,6 +347,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "BingoClient";
             this.Text = "Bingo Client";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -366,6 +384,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLastCall;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLastCallMatches;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelTotalMatches;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBingos;
     }
 }
 

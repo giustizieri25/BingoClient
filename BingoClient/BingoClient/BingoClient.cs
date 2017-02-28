@@ -245,18 +245,23 @@ namespace BingoClient
                         {
                             case "b":
                                 points.Add(cardConfiguration.BPoints[index]);
+                                cardConfiguration.SelectedNumbers.Add(new Point(0, index));
                                 break;
                             case "i":
                                 points.Add(cardConfiguration.IPoints[index]);
+                                cardConfiguration.SelectedNumbers.Add(new Point(1, index));
                                 break;
                             case "n":
                                 points.Add(cardConfiguration.NPoints[index]);
+                                cardConfiguration.SelectedNumbers.Add(new Point(2, index));
                                 break;
                             case "g":
                                 points.Add(cardConfiguration.GPoints[index]);
+                                cardConfiguration.SelectedNumbers.Add(new Point(3, index));
                                 break;
                             case "o":
                                 points.Add(cardConfiguration.OPoints[index]);
+                                cardConfiguration.SelectedNumbers.Add(new Point(4, index));
                                 break;
                             default:
                                 break;
@@ -280,6 +285,7 @@ namespace BingoClient
                 points = searchNumberOrColumns(e.Column, e.Number.Value, e.AllPoints);
                 toolStripStatusLabelLastCallMatches.Text = lastCallMatches.ToString();
                 toolStripStatusLabelTotalMatches.Text = (totalMatches += lastCallMatches).ToString();
+                toolStripStatusLabelBingos.Text = countBingos(this.CurrentConfiguration.CardConfigurations).ToString();
                 interval = 100;
             }
             else
@@ -288,6 +294,53 @@ namespace BingoClient
                 interval = 10;
             }
             clickPointsAndRestore(points, interval, true);
+        }
+
+        private int countBingos(IEnumerable<CardConfiguration> cardConfigurations)
+        {
+            int totalBingos = 0;
+
+            foreach (CardConfiguration cc in cardConfigurations)
+            {
+                List<BingoTypesEnum> bingos = new List<BingoTypesEnum>() { BingoTypesEnum.R0, BingoTypesEnum.R1, BingoTypesEnum.R2, BingoTypesEnum.R3, BingoTypesEnum.R4,
+                    BingoTypesEnum.C0, BingoTypesEnum.C1, BingoTypesEnum.C2, BingoTypesEnum.C3, BingoTypesEnum.C4, BingoTypesEnum.D1, BingoTypesEnum.D2, BingoTypesEnum.SQ};
+
+                for (int x = 0; x < 5; x++)
+                {
+                    for (int y = 0; y < 5; y++)
+                    {
+                        if (!cc.SelectedNumbers.Contains(new Point(x, y)))
+                        {
+                            BingoTypesEnum row = (BingoTypesEnum)Enum.Parse(typeof(BingoTypesEnum), "R" + y);
+                            BingoTypesEnum column = (BingoTypesEnum)Enum.Parse(typeof(BingoTypesEnum), "C" + x);
+
+                            bingos.Remove(row);
+                            bingos.Remove(column);
+
+                            if (x == y)
+                            {
+                                bingos.Remove(BingoTypesEnum.D1);
+                            }
+                            if (x + y == 4)
+                            {
+                                bingos.Remove(BingoTypesEnum.D2);
+
+                                if (x == 0 || y == 0)
+                                {
+                                    bingos.Remove(BingoTypesEnum.SQ);
+                                }
+                            }
+                            if (x + y == 8)
+                            {
+                                bingos.Remove(BingoTypesEnum.SQ);
+                            }
+                        }
+                    }
+                }
+                totalBingos += bingos.Count;
+            }
+
+            return totalBingos;
         }
 
         private void buttonALL_Click(object sender, EventArgs e)
@@ -326,6 +379,9 @@ namespace BingoClient
             {
                 cc.Numbers = null;
             }
+            this.lastCallMatches = 0;
+            this.totalMatches = 0;
+            this.toolStripStatusLabelBingos.Text = "0";
         }
 
         private void readNumbersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -443,5 +499,22 @@ namespace BingoClient
                 }
             }
         }
+    }
+
+    internal enum BingoTypesEnum
+    {
+        R0 = 1,
+        R1 = 2,
+        R2 = 4,
+        R3 = 8,
+        R4 = 16,
+        C0 = 32,
+        C1 = 64,
+        C2 = 128,
+        C3 = 256,
+        C4 = 512,
+        D1 = 1024,
+        D2 = 2048,
+        SQ = 4096
     }
 }
