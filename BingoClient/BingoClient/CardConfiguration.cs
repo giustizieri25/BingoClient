@@ -27,5 +27,11 @@ namespace BingoClient
             this.OPoints = new List<Point>();
             this.SelectedNumbers = new List<Point>() { new Point(2,2) };
         }
+
+        internal void ResetForNewMatch()
+        {
+            this.Numbers = null;
+            this.SelectedNumbers = new List<Point>() { new Point(2, 2) };
+        }
     }
 }

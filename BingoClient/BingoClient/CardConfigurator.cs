@@ -69,7 +69,7 @@ namespace BingoClient
         {
             Bitmap pointBitmap = scanAroundPoint(p, 20);
             Bitmap dryBitmap = getDryBitmap(pointBitmap, color);
-            if (dryBitmap != null) dryBitmap.Save(DateTime.Now.Ticks.ToString() + ".png");
+            //if (dryBitmap != null) dryBitmap.Save(DateTime.Now.Ticks.ToString() + ".png");
             number = detectNumber(dryBitmap);
             return number.Value > -1;
         }

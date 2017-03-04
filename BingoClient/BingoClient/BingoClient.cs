@@ -23,7 +23,7 @@ namespace BingoClient
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
         public static Bitmap[] NumberBitmaps = new Bitmap[76];
-        private int lastCallMatches, totalMatches;
+        private int lastCallMatches, totalMatches, totalBingos;
 
         public BingoClient()
         {
@@ -377,7 +377,7 @@ namespace BingoClient
             this.createCardConfigurationButtons();
             foreach (CardConfiguration cc in this.CurrentConfiguration.CardConfigurations)
             {
-                cc.Numbers = null;
+                cc.ResetForNewMatch();
             }
             this.lastCallMatches = 0;
             this.totalMatches = 0;
