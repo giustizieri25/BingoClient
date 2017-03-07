@@ -23,7 +23,7 @@ namespace BingoClient
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
         public static Bitmap[] NumberBitmaps = new Bitmap[76];
-        private int lastCallMatches, totalMatches, totalBingos;
+        private int lastCallMatches;
 
         public BingoClient()
         {
@@ -76,10 +76,11 @@ namespace BingoClient
                 for (int c = 0; c < this.CurrentConfiguration.Columns && buttonsCreated++ < this.CurrentConfiguration.CardConfigurations.Count; c++)
                 {
                     Button b = new Button();
-                    b.Text = "Add";
+                    b.Text = "+";
                     b.Click += cardConfigurator_Click;
                     b.Dock = DockStyle.Fill;
                     b.TextAlign = ContentAlignment.MiddleCenter;
+                    b.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
                     this.tableLayoutPanel1.Controls.Add(b, c, r);
                 }
             }
@@ -91,9 +92,14 @@ namespace BingoClient
             if (this.createCardConfiguration(cell.Row, cell.Column, false))
             {
                 Button senderButton = sender as Button;
-                senderButton.Text = "Edit";
+                senderButton.Text = this.getCardConfigurationButtonText(this.CurrentConfiguration.CardConfigurations[cell.Row * this.CurrentConfiguration.Columns + cell.Column]);
                 //this.updateCardConfigurationThumbnail(senderControl.Parent, this.CurrentConfiguration.CardConfigurations[cell.Row * this.CurrentConfiguration.Columns + cell.Column]);
             }
+        }
+
+        private string getCardConfigurationButtonText(CardConfiguration cardConfiguration)
+        {
+            return string.Format("{0} | {1}", cardConfiguration.SelectedNumbers.Count - 1, cardConfiguration.Bingos);
         }
 
         private bool createCardConfiguration(int row, int column, bool silent)
@@ -121,32 +127,16 @@ namespace BingoClient
             return false;
         }
 
-        private void updateCardConfigurationThumbnail(Control parent, CardConfiguration cc)
+        private void updateCardConfigurationThumbnail()
         {
-            this.SuspendLayout();
-            TableLayoutPanel tlp = new TableLayoutPanel();
-            tlp.ColumnCount = 5;
-            tlp.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            for (int i = 0; i < tlp.ColumnCount; i++)
+            for (int r = 0; r < this.CurrentConfiguration.Rows; r++)
             {
-                tlp.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100 / tlp.ColumnCount));
+                for (int c = 0; c < this.CurrentConfiguration.Columns; c++)
+                {
+                    int index = r * this.CurrentConfiguration.Columns + c;
+                    tableLayoutPanel1.Controls[index].Text = getCardConfigurationButtonText(this.CurrentConfiguration.CardConfigurations[index]);
+                }
             }
-            tlp.RowCount = 5;
-            for (int i = 0; i < tlp.RowCount; i++)
-            {
-                tlp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100 / tlp.RowCount));
-            }
-            parent.Controls.Add(tlp);
-
-            for (int i = 0; i < 5; i++)
-            {
-                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["B"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
-                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["I"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
-                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["N"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
-                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["G"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
-                tlp.Controls.Add(new Label() { Text = cc.Numbers.Rows[i]["O"].ToString(), Font = new System.Drawing.Font("Microsoft Sans Serif", 4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))) });
-            }
-            this.ResumeLayout(true);
         }
 
         private void pickConfiguration()
@@ -191,41 +181,6 @@ namespace BingoClient
                     Thread.Sleep(waitMs);
                 }
             }
-        }
-
-        private void buttonB_Click(object sender, EventArgs e)
-        {
-            BingoSelectedEventArgs args = e is BingoSelectedEventArgs ? e as BingoSelectedEventArgs : new BingoSelectedEventArgs();
-            args.AllPoints = cc => cc.BPoints;
-            buttonColumn_Clicked(args);
-        }
-
-        private void buttonI_Click(object sender, EventArgs e)
-        {
-            BingoSelectedEventArgs args = e is BingoSelectedEventArgs ? e as BingoSelectedEventArgs : new BingoSelectedEventArgs();
-            args.AllPoints = cc => cc.IPoints;
-            buttonColumn_Clicked(args);
-        }
-
-        private void buttonN_Click(object sender, EventArgs e)
-        {
-            BingoSelectedEventArgs args = e is BingoSelectedEventArgs ? e as BingoSelectedEventArgs : new BingoSelectedEventArgs();
-            args.AllPoints = cc => cc.NPoints;
-            buttonColumn_Clicked(args);
-        }
-
-        private void buttonG_Click(object sender, EventArgs e)
-        {
-            BingoSelectedEventArgs args = e is BingoSelectedEventArgs ? e as BingoSelectedEventArgs : new BingoSelectedEventArgs();
-            args.AllPoints = cc => cc.GPoints;
-            buttonColumn_Clicked(args);
-        }
-
-        private void buttonO_Click(object sender, EventArgs e)
-        {
-            BingoSelectedEventArgs args = e is BingoSelectedEventArgs ? e as BingoSelectedEventArgs : new BingoSelectedEventArgs();
-            args.AllPoints = cc => cc.OPoints;
-            buttonColumn_Clicked(args);
         }
 
         private IEnumerable<Point> searchNumberOrColumns(string column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
@@ -283,9 +238,13 @@ namespace BingoClient
             if (e.Number.HasValue)
             {
                 points = searchNumberOrColumns(e.Column, e.Number.Value, e.AllPoints);
+                updateBingoCount(this.CurrentConfiguration.CardConfigurations);
+                updateCardConfigurationThumbnail();
+
+                toolStripStatusLabelBingos.Text = this.CurrentConfiguration.CardConfigurations.Sum(cc => cc.Bingos).ToString();
                 toolStripStatusLabelLastCallMatches.Text = lastCallMatches.ToString();
-                toolStripStatusLabelTotalMatches.Text = (totalMatches += lastCallMatches).ToString();
-                toolStripStatusLabelBingos.Text = countBingos(this.CurrentConfiguration.CardConfigurations).ToString();
+                toolStripStatusLabelTotalMatches.Text = this.CurrentConfiguration.CardConfigurations.Sum(cc => cc.SelectedNumbers.Count - 1).ToString();
+                
                 interval = 100;
             }
             else
@@ -296,10 +255,8 @@ namespace BingoClient
             clickPointsAndRestore(points, interval, true);
         }
 
-        private int countBingos(IEnumerable<CardConfiguration> cardConfigurations)
+        private void updateBingoCount(IEnumerable<CardConfiguration> cardConfigurations)
         {
-            int totalBingos = 0;
-
             foreach (CardConfiguration cc in cardConfigurations)
             {
                 List<BingoTypesEnum> bingos = new List<BingoTypesEnum>() { BingoTypesEnum.R0, BingoTypesEnum.R1, BingoTypesEnum.R2, BingoTypesEnum.R3, BingoTypesEnum.R4,
@@ -320,6 +277,11 @@ namespace BingoClient
                             if (x == y)
                             {
                                 bingos.Remove(BingoTypesEnum.D1);
+
+                                if (x == 0 || x == 4)
+                                {
+                                    bingos.Remove(BingoTypesEnum.SQ);
+                                }
                             }
                             if (x + y == 4)
                             {
@@ -330,17 +292,11 @@ namespace BingoClient
                                     bingos.Remove(BingoTypesEnum.SQ);
                                 }
                             }
-                            if (x + y == 8)
-                            {
-                                bingos.Remove(BingoTypesEnum.SQ);
-                            }
                         }
                     }
                 }
-                totalBingos += bingos.Count;
+                cc.Bingos = bingos.Count;
             }
-
-            return totalBingos;
         }
 
         private void buttonALL_Click(object sender, EventArgs e)
@@ -379,9 +335,7 @@ namespace BingoClient
             {
                 cc.ResetForNewMatch();
             }
-            this.lastCallMatches = 0;
-            this.totalMatches = 0;
-            this.toolStripStatusLabelBingos.Text = "0";
+
         }
 
         private void readNumbersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -399,7 +353,7 @@ namespace BingoClient
                     if (this.createCardConfiguration(r, c, true))
                     {
                         Button button = this.tableLayoutPanel1.GetControlFromPosition(c, r) as Button;
-                        button.Text = "Edit";
+                        button.Text = this.getCardConfigurationButtonText(this.CurrentConfiguration.CardConfigurations[index]);
                         //this.updateCardConfigurationThumbnail(control.Parent, this.CurrentConfiguration.CardConfigurations[index]);
                     }
                 }
@@ -410,30 +364,36 @@ namespace BingoClient
         {
             if (textBoxInput.Text.Length == 1)
             {
+                BingoSelectedEventArgs args = new BingoSelectedEventArgs();
                 switch (textBoxInput.Text)
                 {
                     case "b":
-                        buttonB_Click(null, new BingoSelectedEventArgs());
+                        args.AllPoints = cc => cc.BPoints;
+                        buttonColumn_Clicked(args);
                         toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
                         textBoxInput.Clear();
                         break;
                     case "i":
-                        buttonI_Click(null, new BingoSelectedEventArgs());
+                        args.AllPoints = cc => cc.IPoints;
+                        buttonColumn_Clicked(args);
                         toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
                         textBoxInput.Clear();
                         break;
                     case "n":
-                        buttonN_Click(null, new BingoSelectedEventArgs());
+                        args.AllPoints = cc => cc.NPoints;
+                        buttonColumn_Clicked(args);
                         toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
                         textBoxInput.Clear();
                         break;
                     case "g":
-                        buttonG_Click(null, new BingoSelectedEventArgs());
+                        args.AllPoints = cc => cc.GPoints;
+                        buttonColumn_Clicked(args);
                         toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
                         textBoxInput.Clear();
                         break;
                     case "o":
-                        buttonO_Click(null, new BingoSelectedEventArgs());
+                        args.AllPoints = cc => cc.OPoints;
+                        buttonColumn_Clicked(args);
                         toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
                         textBoxInput.Clear();
                         break;
@@ -460,31 +420,31 @@ namespace BingoClient
                 {
                     if (1 <= i && i <= 15)
                     {
-                        buttonB_Click(null, new BingoSelectedEventArgs("b", i));
+                        buttonColumn_Clicked(new BingoSelectedEventArgs("b", i, cc => cc.BPoints));
                         toolStripStatusLabelLastCall.Text = i.ToString();
                         textBoxInput.Clear();
                     }
                     else if (16 <= i && i <= 30)
                     {
-                        buttonI_Click(null, new BingoSelectedEventArgs("i", i));
+                        buttonColumn_Clicked(new BingoSelectedEventArgs("i", i, cc => cc.IPoints));
                         toolStripStatusLabelLastCall.Text = i.ToString();
                         textBoxInput.Clear();
                     }
                     else if (31 <= i && i <= 45)
                     {
-                        buttonN_Click(null, new BingoSelectedEventArgs("n", i));
+                        buttonColumn_Clicked(new BingoSelectedEventArgs("n", i, cc => cc.NPoints));
                         toolStripStatusLabelLastCall.Text = i.ToString();
                         textBoxInput.Clear();
                     }
                     else if (46 <= i && i <= 60)
                     {
-                        buttonG_Click(null, new BingoSelectedEventArgs("g", i));
+                        buttonColumn_Clicked(new BingoSelectedEventArgs("g", i, cc => cc.GPoints));
                         toolStripStatusLabelLastCall.Text = i.ToString();
                         textBoxInput.Clear();
                     }
                     else if (61 <= i && i <= 75)
                     {
-                        buttonO_Click(null, new BingoSelectedEventArgs("o", i));
+                        buttonColumn_Clicked(new BingoSelectedEventArgs("o", i, cc => cc.OPoints));
                         toolStripStatusLabelLastCall.Text = i.ToString();
                         textBoxInput.Clear();
                     }
@@ -503,18 +463,8 @@ namespace BingoClient
 
     internal enum BingoTypesEnum
     {
-        R0 = 1,
-        R1 = 2,
-        R2 = 4,
-        R3 = 8,
-        R4 = 16,
-        C0 = 32,
-        C1 = 64,
-        C2 = 128,
-        C3 = 256,
-        C4 = 512,
-        D1 = 1024,
-        D2 = 2048,
-        SQ = 4096
+        R0, R1, R2, R3, R4,
+        C0, C1, C2, C3, C4,
+        D1, D2, SQ
     }
 }

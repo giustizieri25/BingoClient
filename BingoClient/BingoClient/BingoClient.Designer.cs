@@ -35,11 +35,6 @@
             System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
             System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
             this.labelConfiguration = new System.Windows.Forms.Label();
-            this.buttonB = new System.Windows.Forms.Button();
-            this.buttonI = new System.Windows.Forms.Button();
-            this.buttonN = new System.Windows.Forms.Button();
-            this.buttonG = new System.Windows.Forms.Button();
-            this.buttonO = new System.Windows.Forms.Button();
             this.buttonALL = new System.Windows.Forms.Button();
             this.checkBoxCallBingos = new System.Windows.Forms.CheckBox();
             this.textBoxInput = new System.Windows.Forms.TextBox();
@@ -82,9 +77,9 @@
             label2.AutoSize = true;
             label2.Location = new System.Drawing.Point(12, 33);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(83, 13);
+            label2.Size = new System.Drawing.Size(24, 13);
             label2.TabIndex = 2;
-            label2.Text = "Check columns:";
+            label2.Text = "Call";
             // 
             // toolStripStatusLabel1
             // 
@@ -104,6 +99,12 @@
             toolStripStatusLabel3.Size = new System.Drawing.Size(84, 17);
             toolStripStatusLabel3.Text = "Total matches:";
             // 
+            // toolStripStatusLabel4
+            // 
+            toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            toolStripStatusLabel4.Size = new System.Drawing.Size(46, 17);
+            toolStripStatusLabel4.Text = "Bingos:";
+            // 
             // labelConfiguration
             // 
             this.labelConfiguration.AutoSize = true;
@@ -112,59 +113,9 @@
             this.labelConfiguration.Size = new System.Drawing.Size(0, 13);
             this.labelConfiguration.TabIndex = 1;
             // 
-            // buttonB
-            // 
-            this.buttonB.Location = new System.Drawing.Point(96, 28);
-            this.buttonB.Name = "buttonB";
-            this.buttonB.Size = new System.Drawing.Size(23, 23);
-            this.buttonB.TabIndex = 3;
-            this.buttonB.Text = "B";
-            this.buttonB.UseVisualStyleBackColor = true;
-            this.buttonB.Click += new System.EventHandler(this.buttonB_Click);
-            // 
-            // buttonI
-            // 
-            this.buttonI.Location = new System.Drawing.Point(125, 28);
-            this.buttonI.Name = "buttonI";
-            this.buttonI.Size = new System.Drawing.Size(23, 23);
-            this.buttonI.TabIndex = 4;
-            this.buttonI.Text = "I";
-            this.buttonI.UseVisualStyleBackColor = true;
-            this.buttonI.Click += new System.EventHandler(this.buttonI_Click);
-            // 
-            // buttonN
-            // 
-            this.buttonN.Location = new System.Drawing.Point(154, 28);
-            this.buttonN.Name = "buttonN";
-            this.buttonN.Size = new System.Drawing.Size(23, 23);
-            this.buttonN.TabIndex = 5;
-            this.buttonN.Text = "N";
-            this.buttonN.UseVisualStyleBackColor = true;
-            this.buttonN.Click += new System.EventHandler(this.buttonN_Click);
-            // 
-            // buttonG
-            // 
-            this.buttonG.Location = new System.Drawing.Point(183, 28);
-            this.buttonG.Name = "buttonG";
-            this.buttonG.Size = new System.Drawing.Size(23, 23);
-            this.buttonG.TabIndex = 6;
-            this.buttonG.Text = "G";
-            this.buttonG.UseVisualStyleBackColor = true;
-            this.buttonG.Click += new System.EventHandler(this.buttonG_Click);
-            // 
-            // buttonO
-            // 
-            this.buttonO.Location = new System.Drawing.Point(212, 28);
-            this.buttonO.Name = "buttonO";
-            this.buttonO.Size = new System.Drawing.Size(23, 23);
-            this.buttonO.TabIndex = 7;
-            this.buttonO.Text = "O";
-            this.buttonO.UseVisualStyleBackColor = true;
-            this.buttonO.Click += new System.EventHandler(this.buttonO_Click);
-            // 
             // buttonALL
             // 
-            this.buttonALL.Location = new System.Drawing.Point(251, 28);
+            this.buttonALL.Location = new System.Drawing.Point(15, 57);
             this.buttonALL.Name = "buttonALL";
             this.buttonALL.Size = new System.Drawing.Size(75, 23);
             this.buttonALL.TabIndex = 8;
@@ -175,7 +126,7 @@
             // checkBoxCallBingos
             // 
             this.checkBoxCallBingos.AutoSize = true;
-            this.checkBoxCallBingos.Location = new System.Drawing.Point(332, 32);
+            this.checkBoxCallBingos.Location = new System.Drawing.Point(96, 63);
             this.checkBoxCallBingos.Name = "checkBoxCallBingos";
             this.checkBoxCallBingos.Size = new System.Drawing.Size(78, 17);
             this.checkBoxCallBingos.TabIndex = 9;
@@ -184,15 +135,15 @@
             // 
             // textBoxInput
             // 
-            this.textBoxInput.Location = new System.Drawing.Point(96, 57);
+            this.textBoxInput.Location = new System.Drawing.Point(42, 30);
             this.textBoxInput.Name = "textBoxInput";
-            this.textBoxInput.Size = new System.Drawing.Size(52, 20);
+            this.textBoxInput.Size = new System.Drawing.Size(48, 20);
             this.textBoxInput.TabIndex = 10;
             this.textBoxInput.TextChanged += new System.EventHandler(this.textBoxInput_TextChanged);
             // 
             // buttonPower
             // 
-            this.buttonPower.Location = new System.Drawing.Point(251, 57);
+            this.buttonPower.Location = new System.Drawing.Point(99, 28);
             this.buttonPower.Name = "buttonPower";
             this.buttonPower.Size = new System.Drawing.Size(75, 23);
             this.buttonPower.TabIndex = 11;
@@ -202,7 +153,7 @@
             // 
             // buttonBingo
             // 
-            this.buttonBingo.Location = new System.Drawing.Point(332, 57);
+            this.buttonBingo.Location = new System.Drawing.Point(180, 28);
             this.buttonBingo.Name = "buttonBingo";
             this.buttonBingo.Size = new System.Drawing.Size(75, 23);
             this.buttonBingo.TabIndex = 12;
@@ -222,29 +173,24 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 292F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(394, 293);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 220F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(304, 221);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(label1);
-            this.panel1.Controls.Add(this.buttonN);
             this.panel1.Controls.Add(this.labelConfiguration);
             this.panel1.Controls.Add(label2);
             this.panel1.Controls.Add(this.buttonBingo);
-            this.panel1.Controls.Add(this.buttonI);
-            this.panel1.Controls.Add(this.buttonG);
             this.panel1.Controls.Add(this.checkBoxCallBingos);
-            this.panel1.Controls.Add(this.buttonB);
             this.panel1.Controls.Add(this.textBoxInput);
             this.panel1.Controls.Add(this.buttonPower);
             this.panel1.Controls.Add(this.buttonALL);
-            this.panel1.Controls.Add(this.buttonO);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(418, 93);
+            this.panel1.Size = new System.Drawing.Size(328, 93);
             this.panel1.TabIndex = 14;
             // 
             // menuStrip1
@@ -253,7 +199,7 @@
             this.matchToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(418, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(328, 24);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -299,9 +245,9 @@
             this.toolStripStatusLabelTotalMatches,
             toolStripStatusLabel4,
             this.toolStripStatusLabelBingos});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 406);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 347);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(418, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(328, 22);
             this.statusStrip1.TabIndex = 16;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -323,12 +269,6 @@
             this.toolStripStatusLabelTotalMatches.Size = new System.Drawing.Size(13, 17);
             this.toolStripStatusLabelTotalMatches.Text = "0";
             // 
-            // toolStripStatusLabel4
-            // 
-            toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            toolStripStatusLabel4.Size = new System.Drawing.Size(46, 17);
-            toolStripStatusLabel4.Text = "Bingos:";
-            // 
             // toolStripStatusLabelBingos
             // 
             this.toolStripStatusLabelBingos.Name = "toolStripStatusLabelBingos";
@@ -339,7 +279,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(418, 428);
+            this.ClientSize = new System.Drawing.Size(328, 369);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
@@ -363,11 +303,6 @@
         #endregion
 
         private System.Windows.Forms.Label labelConfiguration;
-        private System.Windows.Forms.Button buttonB;
-        private System.Windows.Forms.Button buttonI;
-        private System.Windows.Forms.Button buttonN;
-        private System.Windows.Forms.Button buttonG;
-        private System.Windows.Forms.Button buttonO;
         private System.Windows.Forms.Button buttonALL;
         private System.Windows.Forms.CheckBox checkBoxCallBingos;
         private System.Windows.Forms.TextBox textBoxInput;

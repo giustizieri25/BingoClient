@@ -18,10 +18,11 @@ namespace BingoClient
 
         }
 
-        public BingoSelectedEventArgs(string column, int number)
+        public BingoSelectedEventArgs(string column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
         {
             this.Column = column;
             this.Number = number;
+            this.AllPoints = allPoints;
         }
     }
 }
