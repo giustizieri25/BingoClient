@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,8 +23,11 @@ namespace BingoClient
 
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
-        public static Bitmap[] NumberBitmaps = new Bitmap[76];
+        public static Bitmap[] CardsNumbersBitmaps = new Bitmap[76];
+        public static Bitmap[] ListNumbersBitmaps = new Bitmap[76];
         private int lastCallMatches;
+        private Queue<BingoSelectedEventArgs> Queue = new Queue<BingoSelectedEventArgs>();
+        private Dictionary<int, int> selectionHistory = new Dictionary<int, int>();
 
         public BingoClient()
         {
@@ -43,13 +47,18 @@ namespace BingoClient
 
         private void preLoadNumberMasks()
         {
-            string fileName;
+            string cardFileName, listFileName;
             for (int i = 0; i <= 75; i++)
             {
-                fileName = string.Format(@".\masks\{0}.png", i.ToString().PadLeft(2, '0'));
-                if (File.Exists(fileName))
+                cardFileName = string.Format(@".\masks\cards\{0}.png", i.ToString().PadLeft(2, '0'));
+                listFileName = string.Format(@".\masks\list\{0}.png", i.ToString().PadLeft(2, '0'));
+                if (File.Exists(cardFileName))
                 {
-                    BingoClient.NumberBitmaps[i] = (Bitmap)Bitmap.FromFile(fileName);
+                    BingoClient.CardsNumbersBitmaps[i] = (Bitmap)Bitmap.FromFile(cardFileName);
+                }
+                if (File.Exists(listFileName))
+                {
+                    BingoClient.ListNumbersBitmaps[i] = (Bitmap)Bitmap.FromFile(listFileName);
                 }
             }
         }
@@ -146,7 +155,6 @@ namespace BingoClient
             if (configPicker.ShowDialog(this) == DialogResult.OK)
             {
                 this.CurrentConfiguration = configPicker.SelectedCofiguration;
-                this.labelConfiguration.Text = this.CurrentConfiguration.Name;
             }
         }
 
@@ -241,10 +249,10 @@ namespace BingoClient
                 updateBingoCount(this.CurrentConfiguration.CardConfigurations);
                 updateCardConfigurationThumbnail();
 
-                toolStripStatusLabelBingos.Text = this.CurrentConfiguration.CardConfigurations.Sum(cc => cc.Bingos).ToString();
-                toolStripStatusLabelLastCallMatches.Text = lastCallMatches.ToString();
-                toolStripStatusLabelTotalMatches.Text = this.CurrentConfiguration.CardConfigurations.Sum(cc => cc.SelectedNumbers.Count - 1).ToString();
-                
+                labelTotalMatches.Text = this.CurrentConfiguration.CardConfigurations.Sum(cc => cc.SelectedNumbers.Count - 1).ToString();
+                labelTotalBingos.Text = this.CurrentConfiguration.CardConfigurations.Sum(cc => cc.Bingos).ToString();
+                this.addToSelectionHistory(e.Number.Value, lastCallMatches);
+
                 interval = 100;
             }
             else
@@ -253,6 +261,12 @@ namespace BingoClient
                 interval = 10;
             }
             clickPointsAndRestore(points, interval, true);
+        }
+
+        private void addToSelectionHistory(int value, int lastCallMatches)
+        {
+            this.selectionHistory[value] = lastCallMatches;
+            this.dataGridViewHistory.Rows.Insert(0, value, lastCallMatches);
         }
 
         private void updateBingoCount(IEnumerable<CardConfiguration> cardConfigurations)
@@ -330,12 +344,13 @@ namespace BingoClient
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.selectionHistory = new Dictionary<int, int>();
+            this.dataGridViewHistory.Rows.Clear();
             this.createCardConfigurationButtons();
             foreach (CardConfiguration cc in this.CurrentConfiguration.CardConfigurations)
             {
                 cc.ResetForNewMatch();
             }
-
         }
 
         private void readNumbersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -369,32 +384,27 @@ namespace BingoClient
                 {
                     case "b":
                         args.AllPoints = cc => cc.BPoints;
-                        buttonColumn_Clicked(args);
-                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        this.EnqueueSelection(args);
                         textBoxInput.Clear();
                         break;
                     case "i":
                         args.AllPoints = cc => cc.IPoints;
-                        buttonColumn_Clicked(args);
-                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        this.EnqueueSelection(args);
                         textBoxInput.Clear();
                         break;
                     case "n":
                         args.AllPoints = cc => cc.NPoints;
-                        buttonColumn_Clicked(args);
-                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        this.EnqueueSelection(args);
                         textBoxInput.Clear();
                         break;
                     case "g":
                         args.AllPoints = cc => cc.GPoints;
-                        buttonColumn_Clicked(args);
-                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        this.EnqueueSelection(args);
                         textBoxInput.Clear();
                         break;
                     case "o":
                         args.AllPoints = cc => cc.OPoints;
-                        buttonColumn_Clicked(args);
-                        toolStripStatusLabelLastCall.Text = textBoxInput.Text.ToUpper();
+                        this.EnqueueSelection(args);
                         textBoxInput.Clear();
                         break;
                     case "p":
@@ -418,39 +428,42 @@ namespace BingoClient
                 int i;
                 if (Int32.TryParse(textBoxInput.Text, out i))
                 {
-                    if (1 <= i && i <= 15)
+                    if (this.selectionHistory.ContainsKey(i))
                     {
-                        buttonColumn_Clicked(new BingoSelectedEventArgs("b", i, cc => cc.BPoints));
-                        toolStripStatusLabelLastCall.Text = i.ToString();
-                        textBoxInput.Clear();
-                    }
-                    else if (16 <= i && i <= 30)
-                    {
-                        buttonColumn_Clicked(new BingoSelectedEventArgs("i", i, cc => cc.IPoints));
-                        toolStripStatusLabelLastCall.Text = i.ToString();
-                        textBoxInput.Clear();
-                    }
-                    else if (31 <= i && i <= 45)
-                    {
-                        buttonColumn_Clicked(new BingoSelectedEventArgs("n", i, cc => cc.NPoints));
-                        toolStripStatusLabelLastCall.Text = i.ToString();
-                        textBoxInput.Clear();
-                    }
-                    else if (46 <= i && i <= 60)
-                    {
-                        buttonColumn_Clicked(new BingoSelectedEventArgs("g", i, cc => cc.GPoints));
-                        toolStripStatusLabelLastCall.Text = i.ToString();
-                        textBoxInput.Clear();
-                    }
-                    else if (61 <= i && i <= 75)
-                    {
-                        buttonColumn_Clicked(new BingoSelectedEventArgs("o", i, cc => cc.OPoints));
-                        toolStripStatusLabelLastCall.Text = i.ToString();
-                        textBoxInput.Clear();
+                        showNumberInHistory(i);
+                        this.textBoxInput.Clear();
                     }
                     else
                     {
-                        textBoxInput.Clear();
+                        if (1 <= i && i <= 15)
+                        {
+                            this.EnqueueSelection(new BingoSelectedEventArgs("b", i, cc => cc.BPoints), this.checkBoxAutoPilot.Checked);
+                            textBoxInput.Clear();
+                        }
+                        else if (16 <= i && i <= 30)
+                        {
+                            this.EnqueueSelection(new BingoSelectedEventArgs("i", i, cc => cc.IPoints), this.checkBoxAutoPilot.Checked);
+                            textBoxInput.Clear();
+                        }
+                        else if (31 <= i && i <= 45)
+                        {
+                            this.EnqueueSelection(new BingoSelectedEventArgs("n", i, cc => cc.NPoints), this.checkBoxAutoPilot.Checked);
+                            textBoxInput.Clear();
+                        }
+                        else if (46 <= i && i <= 60)
+                        {
+                            this.EnqueueSelection(new BingoSelectedEventArgs("g", i, cc => cc.GPoints), this.checkBoxAutoPilot.Checked);
+                            textBoxInput.Clear();
+                        }
+                        else if (61 <= i && i <= 75)
+                        {
+                            this.EnqueueSelection(new BingoSelectedEventArgs("o", i, cc => cc.OPoints), this.checkBoxAutoPilot.Checked);
+                            textBoxInput.Clear();
+                        }
+                        else
+                        {
+                            textBoxInput.Clear();
+                        }
                     }
                 }
                 else
@@ -458,6 +471,109 @@ namespace BingoClient
                     textBoxInput.Clear();
                 }
             }
+        }
+
+        private void showNumberInHistory(int i)
+        {
+            this.dataGridViewHistory.ClearSelection();
+            foreach (DataGridViewRow row in this.dataGridViewHistory.Rows)
+            {
+                if (row.Cells[0].Value.Equals(i))
+                {
+                    row.Selected = true;
+                    this.dataGridViewHistory.FirstDisplayedScrollingRowIndex = row.Index;
+                    break;
+                }
+            }
+        }
+
+        private void EnqueueSelection(BingoSelectedEventArgs args, bool processImmediately = false)
+        {
+            this.Queue.Enqueue(args);
+
+            if (processImmediately)
+            {
+                processQueueItem();
+            }
+        }
+
+        private BingoSelectedEventArgs DequeueSelection()
+        {
+            return this.Queue.Count > 0 ? this.Queue.Dequeue() : null;
+        }
+
+        private void timerAutoPilot_Tick(object sender, EventArgs e)
+        {
+            this.processQueue();
+
+            int distance = 25;
+            Point origin = this.CurrentConfiguration.NumbersList;
+            Rectangle r = new Rectangle(new Point(origin.X - distance, origin.Y - distance), new Size(distance * 2, Screen.GetBounds(origin).Height - origin.Y + distance));
+            Bitmap listBitmap = new Bitmap(distance * 2, Screen.GetBounds(origin).Height - origin.Y + distance, PixelFormat.Format32bppArgb);
+            Graphics pointGraphics = Graphics.FromImage(listBitmap);
+            pointGraphics.CopyFromScreen(r.X, r.Y, 0, 0, r.Size, CopyPixelOperation.SourceCopy);
+            //listBitmap.Save("listBitmap-c.png");
+
+            int minX = 0, maxX = 0, minY = 0, maxY = 0;
+            bool rowHasPixels = false, previousRowHasPixels = false;
+            for (int y = 0; y < listBitmap.Height; y++)
+            {
+                if (previousRowHasPixels && !rowHasPixels && minX + minY + maxX + maxY > 0)
+                {
+                    Bitmap reducedPointBitmap = BitmapUtilities.CopyRectangle(listBitmap, new Rectangle(-minX, -minY, maxX - minX + 1, maxY - minY + 1));
+                    //reducedPointBitmap.Save(@".\masks\" + DateTime.Now.Ticks + ".png");
+                    int i = BitmapUtilities.DetectNumber(BingoClient.ListNumbersBitmaps, reducedPointBitmap);
+                    if (i != -1 && !this.selectionHistory.ContainsKey(i))
+                    {
+                        textBoxInput.Text = i.ToString().PadLeft(2, '0');
+                    }
+                }
+                previousRowHasPixels = rowHasPixels;
+                rowHasPixels = false;
+
+                minX = !rowHasPixels && !previousRowHasPixels ? 0 : minX;
+                maxX = !rowHasPixels && !previousRowHasPixels ? 0 : maxX;
+                minY = !rowHasPixels && !previousRowHasPixels ? 0 : minY;
+                maxY = !rowHasPixels && !previousRowHasPixels ? 0 : maxY;
+
+                for (int x = 0; x < listBitmap.Width; x++)
+                {
+                    if (BingoColors.Numbers.Contains(listBitmap.GetPixel(x, y)))
+                    {
+                        listBitmap.SetPixel(x, y, Color.Black);
+
+                        minX = minX == 0 || x < minX ? x : minX;
+                        maxX = maxX == 0 || x > maxX ? x : maxX;
+                        minY = !previousRowHasPixels && (minY == 0 || y < minY) ? y : minY;
+                        maxY = maxY == 0 || y > maxY ? y : maxY;
+
+                        rowHasPixels = true;
+                    }
+                    else
+                    {
+                        listBitmap.SetPixel(x, y, Color.White);
+                    }
+                }
+            }
+            //listBitmap.Save("listBitmap-bn.png");
+        }
+
+        private void processQueue()
+        {
+            while (this.Queue.Count > 0)
+            {
+                this.processQueueItem();
+            }
+        }
+
+        private void processQueueItem()
+        {
+            buttonColumn_Clicked(this.DequeueSelection());
+        }
+
+        private void checkBoxAutoPilot_CheckedChanged(object sender, EventArgs e)
+        {
+            timerAutoPilot.Enabled = checkBoxAutoPilot.Checked;
         }
     }
 

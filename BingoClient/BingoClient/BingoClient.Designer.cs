@@ -28,13 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.Label label1;
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label label2;
-            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
-            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
-            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
-            this.labelConfiguration = new System.Windows.Forms.Label();
+            System.Windows.Forms.Label label1;
+            System.Windows.Forms.Label label3;
             this.buttonALL = new System.Windows.Forms.Button();
             this.checkBoxCallBingos = new System.Windows.Forms.CheckBox();
             this.textBoxInput = new System.Windows.Forms.TextBox();
@@ -42,80 +39,48 @@
             this.buttonBingo = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.dataGridViewHistory = new System.Windows.Forms.DataGridView();
+            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Matches = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkBoxAutoPilot = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.matchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.readNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabelLastCall = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelLastCallMatches = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelTotalMatches = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelBingos = new System.Windows.Forms.ToolStripStatusLabel();
-            label1 = new System.Windows.Forms.Label();
+            this.timerAutoPilot = new System.Windows.Forms.Timer(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.labelTotalMatches = new System.Windows.Forms.Label();
+            this.labelTotalBingos = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
-            toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            label1 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHistory)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(12, 9);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(72, 13);
-            label1.TabIndex = 0;
-            label1.Text = "Configuration:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(12, 33);
+            label2.Location = new System.Drawing.Point(12, 6);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(24, 13);
             label2.TabIndex = 2;
             label2.Text = "Call";
             // 
-            // toolStripStatusLabel1
+            // label1
             // 
-            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            toolStripStatusLabel1.Size = new System.Drawing.Size(52, 17);
-            toolStripStatusLabel1.Text = "Last call:";
-            // 
-            // toolStripStatusLabel2
-            // 
-            toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            toolStripStatusLabel2.Size = new System.Drawing.Size(58, 17);
-            toolStripStatusLabel2.Text = "Matches: ";
-            // 
-            // toolStripStatusLabel3
-            // 
-            toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            toolStripStatusLabel3.Size = new System.Drawing.Size(84, 17);
-            toolStripStatusLabel3.Text = "Total matches:";
-            // 
-            // toolStripStatusLabel4
-            // 
-            toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            toolStripStatusLabel4.Size = new System.Drawing.Size(46, 17);
-            toolStripStatusLabel4.Text = "Bingos:";
-            // 
-            // labelConfiguration
-            // 
-            this.labelConfiguration.AutoSize = true;
-            this.labelConfiguration.Location = new System.Drawing.Point(90, 9);
-            this.labelConfiguration.Name = "labelConfiguration";
-            this.labelConfiguration.Size = new System.Drawing.Size(0, 13);
-            this.labelConfiguration.TabIndex = 1;
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(12, 84);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(39, 13);
+            label1.TabIndex = 15;
+            label1.Text = "History";
             // 
             // buttonALL
             // 
-            this.buttonALL.Location = new System.Drawing.Point(15, 57);
+            this.buttonALL.Location = new System.Drawing.Point(15, 29);
             this.buttonALL.Name = "buttonALL";
             this.buttonALL.Size = new System.Drawing.Size(75, 23);
             this.buttonALL.TabIndex = 8;
@@ -126,7 +91,7 @@
             // checkBoxCallBingos
             // 
             this.checkBoxCallBingos.AutoSize = true;
-            this.checkBoxCallBingos.Location = new System.Drawing.Point(96, 63);
+            this.checkBoxCallBingos.Location = new System.Drawing.Point(96, 33);
             this.checkBoxCallBingos.Name = "checkBoxCallBingos";
             this.checkBoxCallBingos.Size = new System.Drawing.Size(78, 17);
             this.checkBoxCallBingos.TabIndex = 9;
@@ -135,7 +100,7 @@
             // 
             // textBoxInput
             // 
-            this.textBoxInput.Location = new System.Drawing.Point(42, 30);
+            this.textBoxInput.Location = new System.Drawing.Point(42, 3);
             this.textBoxInput.Name = "textBoxInput";
             this.textBoxInput.Size = new System.Drawing.Size(48, 20);
             this.textBoxInput.TabIndex = 10;
@@ -143,7 +108,7 @@
             // 
             // buttonPower
             // 
-            this.buttonPower.Location = new System.Drawing.Point(99, 28);
+            this.buttonPower.Location = new System.Drawing.Point(15, 58);
             this.buttonPower.Name = "buttonPower";
             this.buttonPower.Size = new System.Drawing.Size(75, 23);
             this.buttonPower.TabIndex = 11;
@@ -153,7 +118,7 @@
             // 
             // buttonBingo
             // 
-            this.buttonBingo.Location = new System.Drawing.Point(180, 28);
+            this.buttonBingo.Location = new System.Drawing.Point(96, 58);
             this.buttonBingo.Name = "buttonBingo";
             this.buttonBingo.Size = new System.Drawing.Size(75, 23);
             this.buttonBingo.TabIndex = 12;
@@ -169,18 +134,23 @@
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 123);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 333);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 220F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(304, 221);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 228F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(285, 267);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.labelTotalBingos);
+            this.panel1.Controls.Add(this.labelTotalMatches);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(label3);
+            this.panel1.Controls.Add(this.dataGridViewHistory);
             this.panel1.Controls.Add(label1);
-            this.panel1.Controls.Add(this.labelConfiguration);
+            this.panel1.Controls.Add(this.checkBoxAutoPilot);
             this.panel1.Controls.Add(label2);
             this.panel1.Controls.Add(this.buttonBingo);
             this.panel1.Controls.Add(this.checkBoxCallBingos);
@@ -190,8 +160,62 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(328, 93);
+            this.panel1.Size = new System.Drawing.Size(309, 303);
             this.panel1.TabIndex = 14;
+            // 
+            // dataGridViewHistory
+            // 
+            this.dataGridViewHistory.AllowUserToAddRows = false;
+            this.dataGridViewHistory.AllowUserToDeleteRows = false;
+            this.dataGridViewHistory.AllowUserToResizeColumns = false;
+            this.dataGridViewHistory.AllowUserToResizeRows = false;
+            this.dataGridViewHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewHistory.CausesValidation = false;
+            this.dataGridViewHistory.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.dataGridViewHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Number,
+            this.Matches});
+            this.dataGridViewHistory.Location = new System.Drawing.Point(12, 100);
+            this.dataGridViewHistory.MultiSelect = false;
+            this.dataGridViewHistory.Name = "dataGridViewHistory";
+            this.dataGridViewHistory.ReadOnly = true;
+            this.dataGridViewHistory.RowHeadersVisible = false;
+            this.dataGridViewHistory.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dataGridViewHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridViewHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewHistory.ShowCellErrors = false;
+            this.dataGridViewHistory.ShowCellToolTips = false;
+            this.dataGridViewHistory.ShowEditingIcon = false;
+            this.dataGridViewHistory.ShowRowErrors = false;
+            this.dataGridViewHistory.Size = new System.Drawing.Size(201, 131);
+            this.dataGridViewHistory.TabIndex = 16;
+            // 
+            // Number
+            // 
+            this.Number.HeaderText = "Number";
+            this.Number.Name = "Number";
+            this.Number.ReadOnly = true;
+            // 
+            // Matches
+            // 
+            this.Matches.HeaderText = "Matches";
+            this.Matches.Name = "Matches";
+            this.Matches.ReadOnly = true;
+            // 
+            // checkBoxAutoPilot
+            // 
+            this.checkBoxAutoPilot.AutoSize = true;
+            this.checkBoxAutoPilot.Location = new System.Drawing.Point(96, 5);
+            this.checkBoxAutoPilot.Name = "checkBoxAutoPilot";
+            this.checkBoxAutoPilot.Size = new System.Drawing.Size(71, 17);
+            this.checkBoxAutoPilot.TabIndex = 13;
+            this.checkBoxAutoPilot.Text = "Auto Pilot";
+            this.checkBoxAutoPilot.UseVisualStyleBackColor = true;
+            this.checkBoxAutoPilot.CheckedChanged += new System.EventHandler(this.checkBoxAutoPilot_CheckedChanged);
             // 
             // menuStrip1
             // 
@@ -199,7 +223,7 @@
             this.matchToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(328, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(309, 24);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -234,53 +258,52 @@
             this.readNumbersToolStripMenuItem.Text = "Read Numbers";
             this.readNumbersToolStripMenuItem.Click += new System.EventHandler(this.readNumbersToolStripMenuItem_Click);
             // 
-            // statusStrip1
+            // timerAutoPilot
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            toolStripStatusLabel1,
-            this.toolStripStatusLabelLastCall,
-            toolStripStatusLabel2,
-            this.toolStripStatusLabelLastCallMatches,
-            toolStripStatusLabel3,
-            this.toolStripStatusLabelTotalMatches,
-            toolStripStatusLabel4,
-            this.toolStripStatusLabelBingos});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 347);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(328, 22);
-            this.statusStrip1.TabIndex = 16;
-            this.statusStrip1.Text = "statusStrip1";
+            this.timerAutoPilot.Interval = 2000;
+            this.timerAutoPilot.Tick += new System.EventHandler(this.timerAutoPilot_Tick);
             // 
-            // toolStripStatusLabelLastCall
+            // label3
             // 
-            this.toolStripStatusLabelLastCall.Name = "toolStripStatusLabelLastCall";
-            this.toolStripStatusLabelLastCall.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusLabelLastCall.Text = "0";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(12, 239);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(78, 13);
+            label3.TabIndex = 0;
+            label3.Text = "Total Matches:";
             // 
-            // toolStripStatusLabelLastCallMatches
+            // label4
             // 
-            this.toolStripStatusLabelLastCallMatches.Name = "toolStripStatusLabelLastCallMatches";
-            this.toolStripStatusLabelLastCallMatches.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusLabelLastCallMatches.Text = "0";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 259);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Total Bingos:";
             // 
-            // toolStripStatusLabelTotalMatches
+            // labelTotalMatches
             // 
-            this.toolStripStatusLabelTotalMatches.Name = "toolStripStatusLabelTotalMatches";
-            this.toolStripStatusLabelTotalMatches.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusLabelTotalMatches.Text = "0";
+            this.labelTotalMatches.AutoSize = true;
+            this.labelTotalMatches.Location = new System.Drawing.Point(96, 239);
+            this.labelTotalMatches.Name = "labelTotalMatches";
+            this.labelTotalMatches.Size = new System.Drawing.Size(13, 13);
+            this.labelTotalMatches.TabIndex = 18;
+            this.labelTotalMatches.Text = "0";
             // 
-            // toolStripStatusLabelBingos
+            // labelTotalBingos
             // 
-            this.toolStripStatusLabelBingos.Name = "toolStripStatusLabelBingos";
-            this.toolStripStatusLabelBingos.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusLabelBingos.Text = "0";
+            this.labelTotalBingos.AutoSize = true;
+            this.labelTotalBingos.Location = new System.Drawing.Point(96, 259);
+            this.labelTotalBingos.Name = "labelTotalBingos";
+            this.labelTotalBingos.Size = new System.Drawing.Size(13, 13);
+            this.labelTotalBingos.TabIndex = 19;
+            this.labelTotalBingos.Text = "0";
             // 
             // BingoClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(328, 369);
-            this.Controls.Add(this.statusStrip1);
+            this.ClientSize = new System.Drawing.Size(309, 612);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
@@ -291,18 +314,15 @@
             this.Load += new System.EventHandler(this.form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHistory)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label labelConfiguration;
         private System.Windows.Forms.Button buttonALL;
         private System.Windows.Forms.CheckBox checkBoxCallBingos;
         private System.Windows.Forms.TextBox textBoxInput;
@@ -315,11 +335,14 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem readNumbersToolStripMenuItem;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLastCall;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLastCallMatches;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelTotalMatches;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBingos;
+        private System.Windows.Forms.Timer timerAutoPilot;
+        private System.Windows.Forms.CheckBox checkBoxAutoPilot;
+        private System.Windows.Forms.DataGridView dataGridViewHistory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Number;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Matches;
+        private System.Windows.Forms.Label labelTotalBingos;
+        private System.Windows.Forms.Label labelTotalMatches;
+        private System.Windows.Forms.Label label4;
     }
 }
 

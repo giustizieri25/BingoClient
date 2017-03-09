@@ -98,6 +98,14 @@ namespace BingoClient
             bingoConfiguration.Rows = cardsRows.Count;
             bingoConfiguration.PowerButton = new Point(powerPointValues[0], powerPointValues[1]);
 
+            int[] numbersList = xmlNode["NumbersList"].InnerText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToArray();
+            if (numbersList.Length != 2)
+            {
+                throw new Exception("Invalid Configuration: " + this.Name);
+            }
+
+            bingoConfiguration.NumbersList = new Point(numbersList[0], numbersList[1]);
+
             return bingoConfiguration;
         }
     }

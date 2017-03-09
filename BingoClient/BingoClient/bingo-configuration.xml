@@ -5,6 +5,7 @@
         <ColumnsPoints>925,980,1030,1080,1130</ColumnsPoints>
     </Cards>
     <PowerPoint>1710,395</PowerPoint>
+    <NumbersList Size="25">356,242</NumbersList>
   </Configuration>
   <Configuration Resolution="1920x1080" Cards="5">
     <Cards>
@@ -15,6 +16,7 @@
       <ColumnsPoints>1205,1255,1305,1355,1405</ColumnsPoints>
     </Cards>
     <PowerPoint>1710,390</PowerPoint>
+    <NumbersList Size="25">356,242</NumbersList>
   </Configuration>
   <Configuration Resolution="1920x1080" Cards="6">
     <Cards>
@@ -25,6 +27,7 @@
       <ColumnsPoints>1205,1255,1305,1355,1405</ColumnsPoints>
     </Cards>
     <PowerPoint>1710,390</PowerPoint>
+    <NumbersList Size="25">356,242</NumbersList>
   </Configuration>
   <Configuration Resolution="1920x1080" Cards="11">
     <Cards>
@@ -37,6 +40,7 @@
       <ColumnsPoints>1345,1395,1445,1490,1550</ColumnsPoints>
     </Cards>
     <PowerPoint>1710,390</PowerPoint>
+    <NumbersList Size="25">356,242</NumbersList>
   </Configuration>
   <Configuration Resolution="1920x1080" Cards="12">
     <Cards>
@@ -49,5 +53,6 @@
       <ColumnsPoints>1345,1395,1445,1490,1550</ColumnsPoints>
     </Cards>
     <PowerPoint>1710,390</PowerPoint>
+    <NumbersList Size="25">356,242</NumbersList>
   </Configuration>
 </Configurations>

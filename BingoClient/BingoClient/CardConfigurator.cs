@@ -34,31 +34,26 @@ namespace BingoClient
 
         internal void StartScreenRecognition(CardConfiguration cardConfiguration)
         {
-            Color BColor = Color.FromArgb(69, 121, 40);
-            Color IColor = Color.FromArgb(175, 138, 0);
-            Color NColor = Color.FromArgb(147, 59, 13);
-            Color GColor = Color.FromArgb(105, 50, 105);
-            Color OColor = Color.FromArgb(15, 100, 121);
             int? number;
             for (int i = 0; i < 5; i++)
             {
-                if (ScanPoint(cardConfiguration.BPoints[i], BColor, out number))
+                if (ScanPoint(cardConfiguration.BPoints[i], BingoColors.Cards.BColor, out number))
                 {
                     this.BingoDataTable.Rows[i]["B"] = number.Value;
                 }
-                if (ScanPoint(cardConfiguration.IPoints[i], IColor, out number))
+                if (ScanPoint(cardConfiguration.IPoints[i], BingoColors.Cards.IColor, out number))
                 {
                     this.BingoDataTable.Rows[i]["I"] = number.Value;
                 }
-                if (ScanPoint(cardConfiguration.NPoints[i], NColor, out number))
+                if (ScanPoint(cardConfiguration.NPoints[i], BingoColors.Cards.NColor, out number))
                 {
                     this.BingoDataTable.Rows[i]["N"] = number.Value;
                 }
-                if (ScanPoint(cardConfiguration.GPoints[i], GColor, out number))
+                if (ScanPoint(cardConfiguration.GPoints[i], BingoColors.Cards.GColor, out number))
                 {
                     this.BingoDataTable.Rows[i]["G"] = number.Value;
                 }
-                if (ScanPoint(cardConfiguration.OPoints[i], OColor, out number))
+                if (ScanPoint(cardConfiguration.OPoints[i], BingoColors.Cards.OColor, out number))
                 {
                     this.BingoDataTable.Rows[i]["O"] = number.Value;
                 }
@@ -68,41 +63,10 @@ namespace BingoClient
         private bool ScanPoint(Point p, Color color, out int? number)
         {
             Bitmap pointBitmap = scanAroundPoint(p, 20);
-            Bitmap dryBitmap = getDryBitmap(pointBitmap, color);
+            Bitmap dryBitmap = BitmapUtilities.DryBitmap(pointBitmap, new Color[] { color, BingoColors.Cards.Grey });
             //if (dryBitmap != null) dryBitmap.Save(DateTime.Now.Ticks.ToString() + ".png");
-            number = detectNumber(dryBitmap);
+            number = BitmapUtilities.DetectNumber(BingoClient.CardsNumbersBitmaps, dryBitmap);
             return number.Value > -1;
-        }
-
-        private Bitmap getDryBitmap(Bitmap pointBitmap, Color color)
-        {
-            int minX = Int32.MaxValue, minY = Int32.MaxValue, maxX = 0, maxY = 0;
-            Color grey = Color.FromArgb(67, 57, 38);
-            for (int x = 0; x < pointBitmap.Width; x++)
-            {
-                for (int y = 0; y < pointBitmap.Height; y++)
-                {
-                    Color pixel = pointBitmap.GetPixel(x, y);
-                    if (pixel == color || pixel == grey)
-                    {
-                        pointBitmap.SetPixel(x, y, Color.Black);
-                        minX = x < minX ? x : minX;
-                        maxX = x > maxX ? x : maxX;
-                        minY = y < minY ? y : minY;
-                        maxY = y > maxY ? y : maxY;
-                    }
-                    else
-                    {
-                        pointBitmap.SetPixel(x, y, Color.White);
-                    }
-                }
-            }
-            if (minX < Int32.MaxValue && minY < Int32.MaxValue && maxX > 0 && maxY > 0)
-            {
-                Bitmap reducedPointBitmap = copyRectangle(pointBitmap, new Rectangle(-minX, -minY, maxX - minX + 1, maxY - minY + 1));
-                return reducedPointBitmap;
-            }
-            return null;
         }
 
         private Bitmap scanAroundPoint(Point p, int distance)
@@ -112,52 +76,6 @@ namespace BingoClient
             Graphics pointGraphics = Graphics.FromImage(pointBitmap);
             pointGraphics.CopyFromScreen(r.X, r.Y, 0, 0, r.Size, CopyPixelOperation.SourceCopy);
             return pointBitmap;
-        }
-
-        private int detectNumber(Bitmap reducedPointBitmap)
-        {
-            for (int i = 0; i <= 75; i++)
-            {
-                if (CompareBitmaps(BingoClient.NumberBitmaps[i], reducedPointBitmap))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        private bool CompareBitmaps(Bitmap a, Bitmap b)
-        {
-            if (a == null || b == null)
-            {
-                return false;
-            }
-
-            if (a.Size.Width != b.Size.Width || a.Size.Height != b.Size.Height)
-            {
-                return false;
-            }
-
-            for (int x = 0; x < a.Size.Width; x++)
-            {
-                for (int y = 0; y < a.Size.Height; y++)
-                {
-                    if (a.GetPixel(x, y) != b.GetPixel(x, y))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private Bitmap copyRectangle(Bitmap source, Rectangle r)
-        {
-            Bitmap dest = new Bitmap(r.Width, r.Height);
-            Graphics destGraphics = Graphics.FromImage(dest);
-            destGraphics.DrawImageUnscaled(source, r);
-            return dest;
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
