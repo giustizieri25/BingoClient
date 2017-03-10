@@ -108,7 +108,7 @@ namespace BingoClient
 
         private string getCardConfigurationButtonText(CardConfiguration cardConfiguration)
         {
-            return string.Format("{0} | {1}", cardConfiguration.SelectedNumbers.Count - 1, cardConfiguration.Bingos);
+            return string.Format("{0}:{1}", cardConfiguration.SelectedNumbers.Count - 1, cardConfiguration.Bingos);
         }
 
         private bool createCardConfiguration(int row, int column, bool silent)
@@ -333,6 +333,7 @@ namespace BingoClient
 
         private void buttonBingo_Click(object sender, EventArgs e)
         {
+            this.checkBoxAutoPilot.Checked = false;
             IEnumerable<Point> bingos = this.CurrentConfiguration.CardConfigurations.Select(cc => cc.BingoButton);
             clickPointsAndRestore(bingos, 350, false);
         }
@@ -373,6 +374,7 @@ namespace BingoClient
                     }
                 }
             }
+            this.textBoxInput.Focus();
         }
 
         private void textBoxInput_TextChanged(object sender, EventArgs e)
@@ -437,27 +439,27 @@ namespace BingoClient
                     {
                         if (1 <= i && i <= 15)
                         {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("b", i, cc => cc.BPoints), this.checkBoxAutoPilot.Checked);
+                            this.EnqueueSelection(new BingoSelectedEventArgs("b", i, cc => cc.BPoints));
                             textBoxInput.Clear();
                         }
                         else if (16 <= i && i <= 30)
                         {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("i", i, cc => cc.IPoints), this.checkBoxAutoPilot.Checked);
+                            this.EnqueueSelection(new BingoSelectedEventArgs("i", i, cc => cc.IPoints));
                             textBoxInput.Clear();
                         }
                         else if (31 <= i && i <= 45)
                         {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("n", i, cc => cc.NPoints), this.checkBoxAutoPilot.Checked);
+                            this.EnqueueSelection(new BingoSelectedEventArgs("n", i, cc => cc.NPoints));
                             textBoxInput.Clear();
                         }
                         else if (46 <= i && i <= 60)
                         {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("g", i, cc => cc.GPoints), this.checkBoxAutoPilot.Checked);
+                            this.EnqueueSelection(new BingoSelectedEventArgs("g", i, cc => cc.GPoints));
                             textBoxInput.Clear();
                         }
                         else if (61 <= i && i <= 75)
                         {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("o", i, cc => cc.OPoints), this.checkBoxAutoPilot.Checked);
+                            this.EnqueueSelection(new BingoSelectedEventArgs("o", i, cc => cc.OPoints));
                             textBoxInput.Clear();
                         }
                         else
@@ -487,14 +489,10 @@ namespace BingoClient
             }
         }
 
-        private void EnqueueSelection(BingoSelectedEventArgs args, bool processImmediately = false)
+        private void EnqueueSelection(BingoSelectedEventArgs args)
         {
             this.Queue.Enqueue(args);
-
-            if (processImmediately)
-            {
-                processQueueItem();
-            }
+            processQueueItem();
         }
 
         private BingoSelectedEventArgs DequeueSelection()
@@ -512,7 +510,6 @@ namespace BingoClient
             Bitmap listBitmap = new Bitmap(distance * 2, Screen.GetBounds(origin).Height - origin.Y + distance, PixelFormat.Format32bppArgb);
             Graphics pointGraphics = Graphics.FromImage(listBitmap);
             pointGraphics.CopyFromScreen(r.X, r.Y, 0, 0, r.Size, CopyPixelOperation.SourceCopy);
-            //listBitmap.Save("listBitmap-c.png");
 
             int minX = 0, maxX = 0, minY = 0, maxY = 0;
             bool rowHasPixels = false, previousRowHasPixels = false;
@@ -521,7 +518,6 @@ namespace BingoClient
                 if (previousRowHasPixels && !rowHasPixels && minX + minY + maxX + maxY > 0)
                 {
                     Bitmap reducedPointBitmap = BitmapUtilities.CopyRectangle(listBitmap, new Rectangle(-minX, -minY, maxX - minX + 1, maxY - minY + 1));
-                    //reducedPointBitmap.Save(@".\masks\" + DateTime.Now.Ticks + ".png");
                     int i = BitmapUtilities.DetectNumber(BingoClient.ListNumbersBitmaps, reducedPointBitmap);
                     if (i != -1 && !this.selectionHistory.ContainsKey(i))
                     {
@@ -555,7 +551,6 @@ namespace BingoClient
                     }
                 }
             }
-            //listBitmap.Save("listBitmap-bn.png");
         }
 
         private void processQueue()
@@ -574,6 +569,13 @@ namespace BingoClient
         private void checkBoxAutoPilot_CheckedChanged(object sender, EventArgs e)
         {
             timerAutoPilot.Enabled = checkBoxAutoPilot.Checked;
+            this.textBoxInput.Focus();
+        }
+
+        private void buttonRestart_Click(object sender, EventArgs e)
+        {
+            this.newToolStripMenuItem_Click(null, null);
+            this.readNumbersToolStripMenuItem_Click(null, null);
         }
     }
 

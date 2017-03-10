@@ -39,6 +39,9 @@
             this.buttonBingo = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.labelTotalBingos = new System.Windows.Forms.Label();
+            this.labelTotalMatches = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.dataGridViewHistory = new System.Windows.Forms.DataGridView();
             this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Matches = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,9 +52,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.readNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerAutoPilot = new System.Windows.Forms.Timer(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.labelTotalMatches = new System.Windows.Forms.Label();
-            this.labelTotalBingos = new System.Windows.Forms.Label();
+            this.buttonRestart = new System.Windows.Forms.Button();
             label2 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
@@ -77,6 +78,15 @@
             label1.Size = new System.Drawing.Size(39, 13);
             label1.TabIndex = 15;
             label1.Text = "History";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(12, 239);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(78, 13);
+            label3.TabIndex = 0;
+            label3.Text = "Total Matches:";
             // 
             // buttonALL
             // 
@@ -138,12 +148,13 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 228F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(285, 267);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 266F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(285, 242);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonRestart);
             this.panel1.Controls.Add(this.labelTotalBingos);
             this.panel1.Controls.Add(this.labelTotalMatches);
             this.panel1.Controls.Add(this.label4);
@@ -162,6 +173,33 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(309, 303);
             this.panel1.TabIndex = 14;
+            // 
+            // labelTotalBingos
+            // 
+            this.labelTotalBingos.AutoSize = true;
+            this.labelTotalBingos.Location = new System.Drawing.Point(96, 259);
+            this.labelTotalBingos.Name = "labelTotalBingos";
+            this.labelTotalBingos.Size = new System.Drawing.Size(13, 13);
+            this.labelTotalBingos.TabIndex = 19;
+            this.labelTotalBingos.Text = "0";
+            // 
+            // labelTotalMatches
+            // 
+            this.labelTotalMatches.AutoSize = true;
+            this.labelTotalMatches.Location = new System.Drawing.Point(96, 239);
+            this.labelTotalMatches.Name = "labelTotalMatches";
+            this.labelTotalMatches.Size = new System.Drawing.Size(13, 13);
+            this.labelTotalMatches.TabIndex = 18;
+            this.labelTotalMatches.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 259);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Total Bingos:";
             // 
             // dataGridViewHistory
             // 
@@ -263,47 +301,21 @@
             this.timerAutoPilot.Interval = 2000;
             this.timerAutoPilot.Tick += new System.EventHandler(this.timerAutoPilot_Tick);
             // 
-            // label3
+            // buttonRestart
             // 
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(12, 239);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(78, 13);
-            label3.TabIndex = 0;
-            label3.Text = "Total Matches:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 259);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 13);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "Total Bingos:";
-            // 
-            // labelTotalMatches
-            // 
-            this.labelTotalMatches.AutoSize = true;
-            this.labelTotalMatches.Location = new System.Drawing.Point(96, 239);
-            this.labelTotalMatches.Name = "labelTotalMatches";
-            this.labelTotalMatches.Size = new System.Drawing.Size(13, 13);
-            this.labelTotalMatches.TabIndex = 18;
-            this.labelTotalMatches.Text = "0";
-            // 
-            // labelTotalBingos
-            // 
-            this.labelTotalBingos.AutoSize = true;
-            this.labelTotalBingos.Location = new System.Drawing.Point(96, 259);
-            this.labelTotalBingos.Name = "labelTotalBingos";
-            this.labelTotalBingos.Size = new System.Drawing.Size(13, 13);
-            this.labelTotalBingos.TabIndex = 19;
-            this.labelTotalBingos.Text = "0";
+            this.buttonRestart.Location = new System.Drawing.Point(266, 3);
+            this.buttonRestart.Name = "buttonRestart";
+            this.buttonRestart.Size = new System.Drawing.Size(23, 23);
+            this.buttonRestart.TabIndex = 16;
+            this.buttonRestart.Text = "R";
+            this.buttonRestart.UseVisualStyleBackColor = true;
+            this.buttonRestart.Click += new System.EventHandler(this.buttonRestart_Click);
             // 
             // BingoClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(309, 612);
+            this.ClientSize = new System.Drawing.Size(309, 587);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
@@ -343,6 +355,7 @@
         private System.Windows.Forms.Label labelTotalBingos;
         private System.Windows.Forms.Label labelTotalMatches;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button buttonRestart;
     }
 }
 
