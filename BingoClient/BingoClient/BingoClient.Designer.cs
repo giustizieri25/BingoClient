@@ -39,6 +39,7 @@
             this.buttonBingo = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonRestart = new System.Windows.Forms.Button();
             this.labelTotalBingos = new System.Windows.Forms.Label();
             this.labelTotalMatches = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -52,7 +53,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.readNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerAutoPilot = new System.Windows.Forms.Timer(this.components);
-            this.buttonRestart = new System.Windows.Forms.Button();
+            this.buttonPlus5 = new System.Windows.Forms.Button();
             label2 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
@@ -148,12 +149,13 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 266F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 241F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(285, 242);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonPlus5);
             this.panel1.Controls.Add(this.buttonRestart);
             this.panel1.Controls.Add(this.labelTotalBingos);
             this.panel1.Controls.Add(this.labelTotalMatches);
@@ -173,6 +175,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(309, 303);
             this.panel1.TabIndex = 14;
+            // 
+            // buttonRestart
+            // 
+            this.buttonRestart.Location = new System.Drawing.Point(266, 3);
+            this.buttonRestart.Name = "buttonRestart";
+            this.buttonRestart.Size = new System.Drawing.Size(23, 23);
+            this.buttonRestart.TabIndex = 16;
+            this.buttonRestart.Text = "R";
+            this.buttonRestart.UseVisualStyleBackColor = true;
+            this.buttonRestart.Click += new System.EventHandler(this.buttonRestart_Click);
             // 
             // labelTotalBingos
             // 
@@ -301,15 +313,15 @@
             this.timerAutoPilot.Interval = 2000;
             this.timerAutoPilot.Tick += new System.EventHandler(this.timerAutoPilot_Tick);
             // 
-            // buttonRestart
+            // buttonPlus5
             // 
-            this.buttonRestart.Location = new System.Drawing.Point(266, 3);
-            this.buttonRestart.Name = "buttonRestart";
-            this.buttonRestart.Size = new System.Drawing.Size(23, 23);
-            this.buttonRestart.TabIndex = 16;
-            this.buttonRestart.Text = "R";
-            this.buttonRestart.UseVisualStyleBackColor = true;
-            this.buttonRestart.Click += new System.EventHandler(this.buttonRestart_Click);
+            this.buttonPlus5.Location = new System.Drawing.Point(177, 58);
+            this.buttonPlus5.Name = "buttonPlus5";
+            this.buttonPlus5.Size = new System.Drawing.Size(75, 23);
+            this.buttonPlus5.TabIndex = 20;
+            this.buttonPlus5.Text = "+5";
+            this.buttonPlus5.UseVisualStyleBackColor = true;
+            this.buttonPlus5.Click += new System.EventHandler(this.buttonPlus5_Click);
             // 
             // BingoClient
             // 
@@ -356,6 +368,7 @@
         private System.Windows.Forms.Label labelTotalMatches;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonRestart;
+        private System.Windows.Forms.Button buttonPlus5;
     }
 }
 

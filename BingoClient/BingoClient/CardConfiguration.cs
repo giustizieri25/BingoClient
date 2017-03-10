@@ -14,6 +14,7 @@ namespace BingoClient
         public List<Point> NPoints { get; set; }
         public List<Point> GPoints { get; set; }
         public List<Point> OPoints { get; set; }
+        public Dictionary<BingoColumns, List<Point>> Column { get; set; }
         public Point BingoButton { get; set; }
         public BingoDataTable Numbers { get; set; }
         public List<Point> SelectedNumbers { get; set; }
@@ -26,6 +27,12 @@ namespace BingoClient
             this.NPoints = new List<Point>();
             this.GPoints = new List<Point>();
             this.OPoints = new List<Point>();
+            this.Column = new Dictionary<BingoColumns, List<Point>>();
+            this.Column[BingoColumns.B] = this.BPoints;
+            this.Column[BingoColumns.I] = this.IPoints;
+            this.Column[BingoColumns.N] = this.NPoints;
+            this.Column[BingoColumns.G] = this.GPoints;
+            this.Column[BingoColumns.O] = this.OPoints;
             this.BingoButton = new Point();
 
             this.ResetForNewMatch();

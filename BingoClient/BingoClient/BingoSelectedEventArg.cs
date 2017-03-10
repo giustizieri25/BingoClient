@@ -9,7 +9,7 @@ namespace BingoClient
 {
     public class BingoSelectedEventArgs : EventArgs
     {
-        public string Column { get; set; }
+        public BingoColumns Column { get; set; }
         public int? Number { get; set; }
         public Func<CardConfiguration, IEnumerable<Point>> AllPoints { get; set; }
 
@@ -18,7 +18,7 @@ namespace BingoClient
 
         }
 
-        public BingoSelectedEventArgs(string column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
+        public BingoSelectedEventArgs(BingoColumns column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
         {
             this.Column = column;
             this.Number = number;

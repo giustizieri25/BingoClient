@@ -28,6 +28,7 @@ namespace BingoClient
         private int lastCallMatches;
         private Queue<BingoSelectedEventArgs> Queue = new Queue<BingoSelectedEventArgs>();
         private Dictionary<int, int> selectionHistory = new Dictionary<int, int>();
+        private int plus5 = -1;
 
         public BingoClient()
         {
@@ -191,52 +192,36 @@ namespace BingoClient
             }
         }
 
-        private IEnumerable<Point> searchNumberOrColumns(string column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
+        private IEnumerable<Point> searchNumberOrColumns(BingoColumns column, int number, Func<CardConfiguration, IEnumerable<Point>> allPoints)
         {
-            List<Point> points = new List<Point>();
+            List<Point> pointsToClick = new List<Point>();
             lastCallMatches = 0;
             foreach (CardConfiguration cardConfiguration in this.CurrentConfiguration.CardConfigurations)
             {
                 if (cardConfiguration.Numbers != null)
                 {
-                    DataRow dr = cardConfiguration.Numbers.Select(string.Format("{0}={1}", column, number)).FirstOrDefault();
+                    DataRow dr = cardConfiguration.Numbers.Select(string.Format("{0}={1}", column, Math.Abs(number))).FirstOrDefault();
                     int index = cardConfiguration.Numbers.Rows.IndexOf(dr);
                     if (index > -1)
                     {
                         lastCallMatches++;
-                        switch (column)
+                        if (number > 0)
                         {
-                            case "b":
-                                points.Add(cardConfiguration.BPoints[index]);
-                                cardConfiguration.SelectedNumbers.Add(new Point(0, index));
-                                break;
-                            case "i":
-                                points.Add(cardConfiguration.IPoints[index]);
-                                cardConfiguration.SelectedNumbers.Add(new Point(1, index));
-                                break;
-                            case "n":
-                                points.Add(cardConfiguration.NPoints[index]);
-                                cardConfiguration.SelectedNumbers.Add(new Point(2, index));
-                                break;
-                            case "g":
-                                points.Add(cardConfiguration.GPoints[index]);
-                                cardConfiguration.SelectedNumbers.Add(new Point(3, index));
-                                break;
-                            case "o":
-                                points.Add(cardConfiguration.OPoints[index]);
-                                cardConfiguration.SelectedNumbers.Add(new Point(4, index));
-                                break;
-                            default:
-                                break;
+                            pointsToClick.Add(cardConfiguration.Column[column][index]);
+                            cardConfiguration.SelectedNumbers.Add(new Point((int)column - 1, index));
+                        }
+                        else
+                        {
+                            cardConfiguration.SelectedNumbers.Remove(new Point((int)column - 1, index));
                         }
                     }
                 }
                 else
                 {
-                    points.AddRange(allPoints(cardConfiguration));
+                    pointsToClick.AddRange(allPoints(cardConfiguration));
                 }
             }
-            return points;
+            return pointsToClick;
         }
 
         private void buttonColumn_Clicked(BingoSelectedEventArgs e)
@@ -251,7 +236,7 @@ namespace BingoClient
 
                 labelTotalMatches.Text = this.CurrentConfiguration.CardConfigurations.Sum(cc => cc.SelectedNumbers.Count - 1).ToString();
                 labelTotalBingos.Text = this.CurrentConfiguration.CardConfigurations.Sum(cc => cc.Bingos).ToString();
-                this.addToSelectionHistory(e.Number.Value, lastCallMatches);
+                this.updateSelectionHistory(e.Number.Value, lastCallMatches);
 
                 interval = 100;
             }
@@ -263,10 +248,28 @@ namespace BingoClient
             clickPointsAndRestore(points, interval, true);
         }
 
-        private void addToSelectionHistory(int value, int lastCallMatches)
+        private void updateSelectionHistory(int value, int lastCallMatches)
         {
-            this.selectionHistory[value] = lastCallMatches;
-            this.dataGridViewHistory.Rows.Insert(0, value, lastCallMatches);
+            if (value > 0)
+            {
+                this.selectionHistory[value] = lastCallMatches;
+                this.dataGridViewHistory.Rows.Insert(0, value, lastCallMatches);
+            }
+            else
+            {
+                if (this.selectionHistory.ContainsKey(Math.Abs(value)))
+                {
+                    this.selectionHistory.Remove(Math.Abs(value));
+                    foreach (DataGridViewRow row in this.dataGridViewHistory.Rows)
+                    {
+                        if (row.Cells[0].Value.Equals(Math.Abs(value)))
+                        {
+                            this.dataGridViewHistory.Rows.Remove(row);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private void updateBingoCount(IEnumerable<CardConfiguration> cardConfigurations)
@@ -352,6 +355,8 @@ namespace BingoClient
             {
                 cc.ResetForNewMatch();
             }
+            this.plus5 = -1;
+            this.updatePlus5Counter(0);
         }
 
         private void readNumbersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -379,92 +384,74 @@ namespace BingoClient
 
         private void textBoxInput_TextChanged(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(textBoxInput.Text))
+            {
+                return;
+            }
+
+            // Name of column or command
             if (textBoxInput.Text.Length == 1)
             {
                 BingoSelectedEventArgs args = new BingoSelectedEventArgs();
-                switch (textBoxInput.Text)
+
+                // If it exist as a column ... 
+                if (!Char.IsDigit(textBoxInput.Text[0]) && Enum.TryParse<BingoColumns>(textBoxInput.Text.ToUpper(), out BingoColumns parsed))
                 {
-                    case "b":
-                        args.AllPoints = cc => cc.BPoints;
-                        this.EnqueueSelection(args);
-                        textBoxInput.Clear();
-                        break;
-                    case "i":
-                        args.AllPoints = cc => cc.IPoints;
-                        this.EnqueueSelection(args);
-                        textBoxInput.Clear();
-                        break;
-                    case "n":
-                        args.AllPoints = cc => cc.NPoints;
-                        this.EnqueueSelection(args);
-                        textBoxInput.Clear();
-                        break;
-                    case "g":
-                        args.AllPoints = cc => cc.GPoints;
-                        this.EnqueueSelection(args);
-                        textBoxInput.Clear();
-                        break;
-                    case "o":
-                        args.AllPoints = cc => cc.OPoints;
-                        this.EnqueueSelection(args);
-                        textBoxInput.Clear();
-                        break;
-                    case "p":
-                        buttonPower_Click(null, null);
-                        textBoxInput.Clear();
-                        break;
-                    case "a":
-                        buttonALL_Click(null, null);
-                        textBoxInput.Clear();
-                        break;
-                    default:
-                        if (!Char.IsDigit(textBoxInput.Text[0]))
-                        {
+                    var (column, allPoints) = this.GetColumnFromNumber(null, parsed);
+                    args.AllPoints = allPoints;
+                    this.EnqueueSelection(args);
+                    textBoxInput.Clear();
+                }
+                // Otherwise threat it as a command
+                else
+                {
+                    switch (textBoxInput.Text)
+                    {
+                        case "p":
+                            buttonPower_Click(null, null);
                             textBoxInput.Clear();
-                        }
-                        break;
+                            break;
+                        case "a":
+                            buttonALL_Click(null, null);
+                            textBoxInput.Clear();
+                            break;
+                        case "-":
+                            break;
+                        default:
+                            if (!Char.IsDigit(textBoxInput.Text[0]))
+                            {
+                                textBoxInput.Clear();
+                            }
+                            break;
+                    }
                 }
             }
             else if (textBoxInput.Text.Length == 2)
             {
-                int i;
-                if (Int32.TryParse(textBoxInput.Text, out i))
+                // If it's just 2 digits, like 08, 34, etc ...
+                if (Int32.TryParse(textBoxInput.Text, out int i))
                 {
-                    if (this.selectionHistory.ContainsKey(i))
+                    if (i > 0)
                     {
-                        showNumberInHistory(i);
-                        this.textBoxInput.Clear();
-                    }
-                    else
-                    {
-                        if (1 <= i && i <= 15)
+                        // Show previous match ... 
+                        if (this.selectionHistory.ContainsKey(i))
                         {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("b", i, cc => cc.BPoints));
-                            textBoxInput.Clear();
+                            showNumberInHistory(i);
+                            this.textBoxInput.Clear();
                         }
-                        else if (16 <= i && i <= 30)
-                        {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("i", i, cc => cc.IPoints));
-                            textBoxInput.Clear();
-                        }
-                        else if (31 <= i && i <= 45)
-                        {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("n", i, cc => cc.NPoints));
-                            textBoxInput.Clear();
-                        }
-                        else if (46 <= i && i <= 60)
-                        {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("g", i, cc => cc.GPoints));
-                            textBoxInput.Clear();
-                        }
-                        else if (61 <= i && i <= 75)
-                        {
-                            this.EnqueueSelection(new BingoSelectedEventArgs("o", i, cc => cc.OPoints));
-                            textBoxInput.Clear();
-                        }
+                        // Otherwise it's a new match
                         else
                         {
-                            textBoxInput.Clear();
+                            if (1 <= i && i <= 75)
+                            {
+                                var (column, allPoints) = this.GetColumnFromNumber(i, BingoColumns.None);
+                                this.EnqueueSelection(new BingoSelectedEventArgs(column, i, allPoints));
+                                textBoxInput.Clear();
+                            }
+                            else
+                            {
+                                textBoxInput.Clear();
+                            }
                         }
                     }
                 }
@@ -472,6 +459,68 @@ namespace BingoClient
                 {
                     textBoxInput.Clear();
                 }
+            }
+            else if (textBoxInput.Text.Length == 3)
+            {
+                // To remove typoed entries, just follow the regular flow, but with a negative number.
+                if (Int32.TryParse(textBoxInput.Text, out int i) && i < 0)
+                {
+                    this.EnqueueSelection(new BingoSelectedEventArgs(this.GetColumnFromNumber(Math.Abs(i), BingoColumns.None).column, i, null));
+                }
+                textBoxInput.Clear();
+            }
+        }
+
+        (BingoColumns column, Func<CardConfiguration, IEnumerable<Point>> allPoints) GetColumnFromNumber(int? i, BingoColumns column)
+        {
+            if (i.HasValue)
+            {
+                if (1 <= i.Value && i.Value <= 15)
+                {
+                    return (BingoColumns.B, cc => cc.BPoints);
+                }
+                else if (16 <= i.Value && i.Value <= 30)
+                {
+                    return (BingoColumns.I, cc => cc.IPoints);
+                }
+                else if (31 <= i.Value && i.Value <= 45)
+                {
+                    return (BingoColumns.N, cc => cc.NPoints);
+                }
+                else if (46 <= i.Value && i.Value <= 60)
+                {
+                    return (BingoColumns.G, cc => cc.GPoints);
+                }
+                else if (61 <= i.Value && i.Value <= 75)
+                {
+                    return (BingoColumns.O, cc => cc.OPoints);
+                }
+                else
+                {
+                    throw new InvalidOperationException(i + " is not valid number");
+                }
+            }
+            else if (Enum.IsDefined(typeof(BingoColumns), column) && column != BingoColumns.None)
+            {
+                switch (column)
+                {
+                    case BingoColumns.B:
+                        return (BingoColumns.B, cc => cc.BPoints);
+                    case BingoColumns.I:
+                        return (BingoColumns.I, cc => cc.IPoints);
+                    case BingoColumns.N:
+                        return (BingoColumns.N, cc => cc.NPoints);
+                    case BingoColumns.G:
+                        return (BingoColumns.G, cc => cc.GPoints);
+                    case BingoColumns.O:
+                        return (BingoColumns.O, cc => cc.OPoints);
+                    default:
+                        throw new ArgumentException();
+                }
+            }
+            else
+            {
+                throw new ArgumentException();
             }
         }
 
@@ -563,7 +612,40 @@ namespace BingoClient
 
         private void processQueueItem()
         {
-            buttonColumn_Clicked(this.DequeueSelection());
+            BingoSelectedEventArgs args = this.DequeueSelection();
+
+            buttonColumn_Clicked(args);
+
+            if (args.Number.HasValue)
+            {
+                this.updatePlus5Counter(args.Number.Value);
+            }
+        }
+
+        private void updatePlus5Counter(int number)
+        {
+            if (this.plus5 > -1)
+            {
+                if (number > 0)
+                {
+                    this.plus5++;
+                }
+                else if (this.selectionHistory.ContainsKey(Math.Abs(number)))
+                {
+                    this.plus5--;
+                }
+                this.buttonPlus5.Text = string.Format("+5 ({0})", this.plus5);
+            }
+            else
+            {
+                this.buttonPlus5.Text = "+5";
+            }
+
+            if (this.plus5 == 5)
+            {
+                this.buttonBingo_Click(null, null);
+                this.plus5 = -1;
+            }
         }
 
         private void checkBoxAutoPilot_CheckedChanged(object sender, EventArgs e)
@@ -576,6 +658,11 @@ namespace BingoClient
         {
             this.newToolStripMenuItem_Click(null, null);
             this.readNumbersToolStripMenuItem_Click(null, null);
+        }
+
+        private void buttonPlus5_Click(object sender, EventArgs e)
+        {
+            this.plus5 = 0;
         }
     }
 
